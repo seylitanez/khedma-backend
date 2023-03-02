@@ -1,6 +1,12 @@
 spring:
   data:
     mongodb:
-      user: test
-      password: test
-      uri: mongodb://host:27017/db
+      username:
+      password:
+      port: 27017
+      host: localhost
+      database: khedma
+      authentication-database: admin
+      auto-index-creation: true
+server:
+  port: 9630
