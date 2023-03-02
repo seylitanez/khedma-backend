@@ -1,0 +1,6 @@
+spring:
+  data:
+    mongodb:
+      user: test
+      password: test
+      uri: mongodb://host:27017/db

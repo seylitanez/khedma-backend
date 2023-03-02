@@ -8,6 +8,7 @@ public class KhedmaBackendApplication {
 
 	public static void main(String[] args) {
 		SpringApplication.run(KhedmaBackendApplication.class, args);
+
 	}
 
 }
