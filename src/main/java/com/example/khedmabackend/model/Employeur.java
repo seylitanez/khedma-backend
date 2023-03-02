@@ -1,9 +1,6 @@
 package com.example.khedmabackend.model;
 
 
-import lombok.Data;
-import lombok.NoArgsConstructor;
-import lombok.RequiredArgsConstructor;
 import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -11,28 +8,30 @@ import org.springframework.security.core.userdetails.UserDetails;
 import java.util.Collection;
 import java.util.List;
 
-import static com.example.khedmabackend.Utils.Constantes.EMPLOYEUR;
+import static com.example.khedmabackend.model.Role.EMPLOYEUR;
+
 
 
 @Document
 public class Employeur extends Utilisateur implements UserDetails {
-    public Employeur(String nomUtilisateur, String motDePasse, String adresseMail, String nom, String prenom, Genre genre, String tel, Addresse wilaya) {
-        super(nomUtilisateur, motDePasse, adresseMail, nom, prenom, genre, tel, wilaya);
+
+    public Employeur(String nomUtilisateur, String motDePasse, String adresseMail, String nom, String prenom, Genre genre, String tel, Addresse Wilaya,Role role) {
+        super(nomUtilisateur, motDePasse, adresseMail, nom, prenom, genre, tel, Wilaya,role);
     }
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        return List.of(() -> EMPLOYEUR);
+        return List.of(() -> EMPLOYEUR.name());
     }
 
     @Override
     public String getPassword() {
-        return null;
+        return getPassword();
     }
 
     @Override
     public String getUsername() {
-        return null;
+        return getUsername();
     }
 
     @Override

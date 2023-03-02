@@ -1,32 +1,31 @@
 package com.example.khedmabackend.model;
 
 
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
 import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import java.util.Collection;
 import java.util.List;
-import java.util.stream.Collectors;
 
-import static com.example.khedmabackend.Utils.Constantes.EMPLOYE;
-
+import static com.example.khedmabackend.model.Role.EMPLOYE;
 
 @Document
 public class Employe extends Utilisateur implements UserDetails {
-    public Employe(String nomUtilisateur, String motDePasse, String adresseMail, String nom, String prenom, Genre genre, String tel, Addresse wilaya) {
-        super(nomUtilisateur, motDePasse, adresseMail, nom, prenom, genre, tel, wilaya);
+
+
+    public Employe(String nomUtilisateur, String motDePasse, String adresseMail, String nom, String prenom, Genre genre, String tel, Addresse Wilaya,Role role) {
+        super(nomUtilisateur, motDePasse, adresseMail, nom, prenom, genre, tel, Wilaya,role);
     }
-        @Override
+
+    @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        return List.of(() -> EMPLOYE);
+        return List.of(() -> EMPLOYE.name());
     }
 
     @Override
     public String getPassword() {
+        System.out.println(getPassword());
         return getPassword();
     }
 
