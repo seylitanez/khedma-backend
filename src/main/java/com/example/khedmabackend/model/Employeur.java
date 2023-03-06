@@ -1,10 +1,12 @@
 package com.example.khedmabackend.model;
 
 
+import lombok.Data;
 import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
@@ -13,11 +15,22 @@ import static com.example.khedmabackend.model.Role.EMPLOYEUR;
 
 
 @Document
+
 public class Employeur extends Utilisateur implements UserDetails {
 
-    public Employeur(String nomUtilisateur, String motDePasse, String adresseMail, String nom, String prenom, Genre genre, String tel, Addresse Wilaya,Role role) {
-        super(nomUtilisateur, motDePasse, adresseMail, nom, prenom, genre, tel, Wilaya,role);
+    public List<Annonce> getAnnonces() {
+        return annonces;
     }
+
+    public void setAnnonces(List<Annonce> annonces) {
+        this.annonces = annonces;
+    }
+
+    private List<Annonce> annonces=new ArrayList<>();
+    public Employeur(String nomUtilisateur, String motDePasse, String adresseMail, String nom, String prenom, Genre genre, String tel, Addresse adresse,Role role) {
+        super(nomUtilisateur, motDePasse, adresseMail, nom, prenom, genre, tel, adresse,role);
+    }
+
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
@@ -26,12 +39,12 @@ public class Employeur extends Utilisateur implements UserDetails {
 
     @Override
     public String getPassword() {
-        return getPassword();
+        return this.getMotDePasse();
     }
 
     @Override
     public String getUsername() {
-        return getUsername();
+        return this.getNomUtilisateur();
     }
 
     @Override

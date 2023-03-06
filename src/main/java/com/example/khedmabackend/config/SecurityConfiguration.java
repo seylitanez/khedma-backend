@@ -9,6 +9,8 @@ import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
+import static com.example.khedmabackend.Utils.Constantes.EMPLOYEUR;
+
 @Configuration
 @EnableWebSecurity
 @RequiredArgsConstructor
@@ -18,8 +20,10 @@ public class SecurityConfiguration {
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception{
         http.csrf().disable()
                 .cors().disable()
+                .authorizeHttpRequests().requestMatchers("/api/v1/employeur/**").hasAnyAuthority(EMPLOYEUR)
+                .and()
                 .authorizeHttpRequests().requestMatchers("/api/v1/auth/**").permitAll()
-                .anyRequest().permitAll()
+                .anyRequest().authenticated()
                 .and()
                 .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
                 .and()

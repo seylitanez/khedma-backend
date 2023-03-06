@@ -14,24 +14,25 @@ import static com.example.khedmabackend.model.Role.EMPLOYE;
 public class Employe extends Utilisateur implements UserDetails {
 
 
-    public Employe(String nomUtilisateur, String motDePasse, String adresseMail, String nom, String prenom, Genre genre, String tel, Addresse Wilaya,Role role) {
-        super(nomUtilisateur, motDePasse, adresseMail, nom, prenom, genre, tel, Wilaya,role);
+    public Employe(String nomUtilisateur, String motDePasse, String adresseMail, String nom, String prenom, Genre genre, String tel, Addresse adresse,Role role) {
+        super(nomUtilisateur, motDePasse, adresseMail, nom, prenom, genre, tel, adresse,role);
     }
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
         return List.of(() -> EMPLOYE.name());
+
     }
 
     @Override
     public String getPassword() {
         System.out.println(getPassword());
-        return getPassword();
+        return this.getMotDePasse();
     }
 
     @Override
     public String getUsername() {
-        return getUsername();
+        return this.getNomUtilisateur();
     }
 
     @Override

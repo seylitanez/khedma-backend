@@ -1,30 +1,52 @@
-package com.example.khedmabackend.controller;
+package com.example.khedmabackend.authentification.service;
 
-
-import com.example.khedmabackend.authentification.AuthentificationRegister;
+import com.example.khedmabackend.authentification.AuthentificationRequest;
+import com.example.khedmabackend.authentification.RegisterRequest;
+import com.example.khedmabackend.authentification.ResponseToken;
+import com.example.khedmabackend.config.JwtService;
 import com.example.khedmabackend.model.Employe;
 import com.example.khedmabackend.model.Employeur;
 import com.example.khedmabackend.model.Moderateur;
 import com.example.khedmabackend.model.Utilisateur;
 import com.example.khedmabackend.repo.UtilisateurRepo;
 import lombok.RequiredArgsConstructor;
-import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.stereotype.Service;
 
-@RestController
-@RequestMapping("/api/v1/user")
 @RequiredArgsConstructor
-public class userController {
-
+@Service
+public class AuthentificationService {
     private final UtilisateurRepo utilisateurRepo;
+    private final JwtService jwtService;
 
-    @PostMapping("/add-user")
-    public ResponseEntity<Utilisateur> addUser(@RequestBody AuthentificationRegister register) throws Exception {
+    private final UserDetailsService userDetailsService;
+    private final BCryptPasswordEncoder passwordEncoder;
 
-        System.out.println(register.toString());
+
+    public ResponseToken Authenticate(AuthentificationRequest authentificationRequest){
+
+        UsernamePasswordAuthenticationToken usernamePasswordAuthenticationToken=
+                new UsernamePasswordAuthenticationToken(authentificationRequest.getNomUtilisateur(),authentificationRequest.getMotDePasse());
+
+        Utilisateur utilisateur= utilisateurRepo.findBynomUtilisateur(authentificationRequest.getNomUtilisateur()).orElseThrow();
+        var userDetails= userDetailsService.loadUserByUsername(authentificationRequest.getNomUtilisateur());
+
+        String token=jwtService.generateToken((UserDetails) utilisateur);
+        System.out.println("token:---->:"+token);
+
+        return ResponseToken.builder().token(token).build();
+
+    }
+
+
+    public ResponseToken save(RegisterRequest register) throws Exception {
+
+        var motDePasse= passwordEncoder.encode(register.getMotDePasse());
+
         Utilisateur utilisateur = null;
         switch (register.getRole()){
 
@@ -32,7 +54,7 @@ public class userController {
                 utilisateurRepo.insert(
                         utilisateur=new Employe(
                                 register.getNomUtilisateur(),
-                                register.getMotDePasse(),
+                                motDePasse,
                                 register.getAdresseMail(),
                                 register.getNom(),
                                 register.getPrenom(),
@@ -40,13 +62,13 @@ public class userController {
                                 register.getTel(),
                                 register.getAdresse(),
                                 register.getRole()
-                                ));
+                        ));
             }
             case EMPLOYEUR -> {
                 utilisateurRepo.insert(
                         utilisateur=new Employeur(
                                 register.getNomUtilisateur(),
-                                register.getMotDePasse(),
+                                motDePasse,
                                 register.getAdresseMail(),
                                 register.getNom(),
                                 register.getPrenom(),
@@ -60,7 +82,7 @@ public class userController {
                 utilisateurRepo.insert(
                         utilisateur = new Moderateur(
                                 register.getNomUtilisateur(),
-                                register.getMotDePasse(),
+                                motDePasse,
                                 register.getAdresseMail(),
                                 register.getNom(),
                                 register.getPrenom(),
@@ -68,13 +90,16 @@ public class userController {
                                 register.getTel(),
                                 register.getAdresse(),
                                 register.getRole()
-                                ));
+                        ));
             }
         }
         if (utilisateur==null)throw new Exception("user null");
 
-        return ResponseEntity.status(201).body(utilisateur);
-    }
+        String token=jwtService.generateToken((UserDetails) utilisateur);
 
+
+        return ResponseToken.builder().token(token).build();
+
+    }
 
 }

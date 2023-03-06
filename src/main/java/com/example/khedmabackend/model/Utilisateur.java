@@ -1,12 +1,13 @@
 package com.example.khedmabackend.model;
 
 
+import lombok.Data;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.index.Indexed;
 import org.springframework.data.mongodb.core.mapping.Document;
 
 @Document
-
+@Data
 public class Utilisateur {
 
     @Id
@@ -22,7 +23,7 @@ public class Utilisateur {
     private Addresse adresse;
     private Role role;
 
-    public Utilisateur(String nomUtilisateur, String motDePasse, String adresseMail, String nom, String prenom, Genre genre, String tel, Addresse wilaya,Role role) {
+    public Utilisateur(String nomUtilisateur, String motDePasse, String adresseMail, String nom, String prenom, Genre genre, String tel, Addresse adresse,Role role) {
         this.nomUtilisateur = nomUtilisateur;
         this.motDePasse = motDePasse;
         this.adresseMail = adresseMail;

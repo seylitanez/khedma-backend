@@ -6,7 +6,7 @@ import com.example.khedmabackend.model.Role;
 import lombok.Data;
 
 @Data
-public class AuthentificationRegister {
+public class RegisterRequest {
     private String nomUtilisateur;
     private String motDePasse;
     private String adresseMail;

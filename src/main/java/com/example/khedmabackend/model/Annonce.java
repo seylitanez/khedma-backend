@@ -1,9 +1,6 @@
 package com.example.khedmabackend.model;
 
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
-import lombok.RequiredArgsConstructor;
+import lombok.*;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
@@ -14,6 +11,7 @@ import java.util.Date;
 @Document
 @Data
 @RequiredArgsConstructor
+@AllArgsConstructor
 public class Annonce {
 
     @Id

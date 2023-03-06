@@ -13,11 +13,11 @@ import static com.example.khedmabackend.model.Role.MODERATEUR;
 
 @Document
 
-public class Moderateur extends Utilisateur implements Administrateur , UserDetails {
+public class Moderateur extends Utilisateur implements  UserDetails {
 
 
-    public Moderateur(String nomUtilisateur, String motDePasse, String adresseMail, String nom, String prenom, Genre genre, String tel, Addresse wilaya, Role role) {
-        super(nomUtilisateur, motDePasse, adresseMail, nom, prenom, genre, tel, wilaya,role);
+    public Moderateur(String nomUtilisateur, String motDePasse, String adresseMail, String nom, String prenom, Genre genre, String tel, Addresse adresse, Role role) {
+        super(nomUtilisateur, motDePasse, adresseMail, nom, prenom, genre, tel, adresse,role);
     }
 
     @Override
@@ -27,12 +27,12 @@ public class Moderateur extends Utilisateur implements Administrateur , UserDeta
 
     @Override
     public String getPassword() {
-        return getPassword();
+        return this.getMotDePasse();
     }
 
     @Override
     public String getUsername() {
-        return getUsername();
+        return this.getNomUtilisateur();
     }
 
     @Override
@@ -55,8 +55,5 @@ public class Moderateur extends Utilisateur implements Administrateur , UserDeta
         return false;
     }
 
-    @Override
-    public void supprimerAnnonce() {
 
-    }
 }
