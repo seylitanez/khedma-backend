@@ -3,6 +3,7 @@ package com.example.khedmabackend.model;
 
 import lombok.Data;
 import org.springframework.data.mongodb.core.mapping.Document;
+import org.springframework.data.mongodb.core.mapping.Unwrapped;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
@@ -25,6 +26,9 @@ public class Employeur extends Utilisateur implements UserDetails {
     public void setAnnonces(List<Annonce> annonces) {
         this.annonces = annonces;
     }
+
+
+
 
     private List<Annonce> annonces=new ArrayList<>();
     public Employeur(String nomUtilisateur, String motDePasse, String adresseMail, String nom, String prenom, Genre genre, String tel, Addresse adresse,Role role) {

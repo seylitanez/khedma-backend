@@ -8,7 +8,7 @@ import org.springframework.data.mongodb.core.mapping.Document;
 
 @Document
 @Data
-public class Utilisateur {
+public abstract class Utilisateur {
 
     @Id
     private String id;
@@ -34,4 +34,5 @@ public class Utilisateur {
         this.adresse = adresse;
         this.role=role;
     }
+
 }

@@ -45,12 +45,14 @@ public class AuthentificationService {
 
     public ResponseToken save(RegisterRequest register) throws Exception {
 
+        System.out.println("save");
         var motDePasse= passwordEncoder.encode(register.getMotDePasse());
 
         Utilisateur utilisateur = null;
         switch (register.getRole()){
 
             case EMPLOYE -> {
+                System.out.println("employe");
                 utilisateurRepo.insert(
                         utilisateur=new Employe(
                                 register.getNomUtilisateur(),
@@ -65,6 +67,7 @@ public class AuthentificationService {
                         ));
             }
             case EMPLOYEUR -> {
+                System.out.println("employeur");
                 utilisateurRepo.insert(
                         utilisateur=new Employeur(
                                 register.getNomUtilisateur(),
@@ -79,6 +82,7 @@ public class AuthentificationService {
                         ));
             }
             case MODERATEUR -> {
+                System.out.println("moderateur");
                 utilisateurRepo.insert(
                         utilisateur = new Moderateur(
                                 register.getNomUtilisateur(),
