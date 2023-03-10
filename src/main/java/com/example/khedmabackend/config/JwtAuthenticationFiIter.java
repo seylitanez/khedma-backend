@@ -20,8 +20,8 @@ import java.io.IOException;
 public class JwtAuthenticationFiIter extends OncePerRequestFilter {
     private final JwtService jwtService;
     private final UserDetailsService userDetailsService;
-
     @Override
+    //verification du token
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
         final String authHeder=request.getHeader("Authorization"),jwt,userEmail;
         System.out.println("authHeder = " + authHeder);

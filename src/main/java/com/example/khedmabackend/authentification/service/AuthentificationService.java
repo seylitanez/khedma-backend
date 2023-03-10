@@ -22,35 +22,23 @@ import org.springframework.stereotype.Service;
 public class AuthentificationService {
     private final UtilisateurRepo utilisateurRepo;
     private final JwtService jwtService;
-
     private final UserDetailsService userDetailsService;
     private final BCryptPasswordEncoder passwordEncoder;
-
-
+    //cree une token pour un utilisateur qui se connect
     public ResponseToken Authenticate(AuthentificationRequest authentificationRequest){
-
-        UsernamePasswordAuthenticationToken usernamePasswordAuthenticationToken=
-                new UsernamePasswordAuthenticationToken(authentificationRequest.getNomUtilisateur(),authentificationRequest.getMotDePasse());
-
+        var usernamePasswordAuthenticationToken= new UsernamePasswordAuthenticationToken(authentificationRequest.getNomUtilisateur(),authentificationRequest.getMotDePasse());
         Utilisateur utilisateur= utilisateurRepo.findBynomUtilisateur(authentificationRequest.getNomUtilisateur()).orElseThrow();
         var userDetails= userDetailsService.loadUserByUsername(authentificationRequest.getNomUtilisateur());
-
         String token=jwtService.generateToken((UserDetails) utilisateur);
         System.out.println("token:---->:"+token);
-
         return ResponseToken.builder().token(token).build();
-
     }
-
-
+    //sauvgarder un nouveux utilisateur et cree son token de conection
     public ResponseToken save(RegisterRequest register) throws Exception {
-
         System.out.println("save");
         var motDePasse= passwordEncoder.encode(register.getMotDePasse());
-
         Utilisateur utilisateur = null;
         switch (register.getRole()){
-
             case EMPLOYE -> {
                 System.out.println("employe");
                 utilisateurRepo.insert(
@@ -98,12 +86,7 @@ public class AuthentificationService {
             }
         }
         if (utilisateur==null)throw new Exception("user null");
-
         String token=jwtService.generateToken((UserDetails) utilisateur);
-
-
         return ResponseToken.builder().token(token).build();
-
     }
-
 }

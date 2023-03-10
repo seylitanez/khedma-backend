@@ -17,26 +17,16 @@ import org.springframework.web.bind.annotation.RestController;
 @RequiredArgsConstructor
 public class AuthenticationController {
     private final AuthentificationService authentificationService;
-
     @PostMapping("/add-user")
+    //rest api ajout d'un utilisateur
     public ResponseEntity<ResponseToken> addUser(@RequestBody RegisterRequest register) throws Exception {
-
         ResponseToken token=authentificationService.save(register);
-
-
-
         return ResponseEntity.status(201).body(token);
     }
-
-
     @PostMapping("/login")
+    //rest api de conction d'un utilisateur
     public ResponseEntity<ResponseToken> login(@RequestBody AuthentificationRequest authentificationRequest){
-
-
         ResponseToken token= authentificationService.Authenticate(authentificationRequest);
-
         return ResponseEntity.ok().body(token);
-
     }
-
 }

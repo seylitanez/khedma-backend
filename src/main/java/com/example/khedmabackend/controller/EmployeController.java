@@ -15,13 +15,10 @@ import java.util.List;
 @RequestMapping("/api/v1/employe")
 @RequiredArgsConstructor
 public class EmployeController {
-
     private final EmployeService employeService;
-
-
     @GetMapping("/annonces")
+    //api de list d'annonces
     public ResponseEntity<List<Annonce>> getAnnonces(){
-
         return ResponseEntity.ok().body(employeService.getAnnonces());
     }
 }

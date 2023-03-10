@@ -22,11 +22,13 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 public class ApplicationConfig {
     private final UtilisateurRepo repository;
     @Bean
+    //chercher un utilisateur
     public UserDetailsService userDetailsService(){
         return username -> (UserDetails) repository.findBynomUtilisateur(username)
                 .orElseThrow(()->new UsernameNotFoundException("User not found"));
     }
     @Bean
+    // authontifer un utilisateur
     public AuthenticationProvider authenticationProvider(){
         DaoAuthenticationProvider authProvider=new DaoAuthenticationProvider();
         authProvider.setUserDetailsService(userDetailsService());
@@ -38,10 +40,12 @@ public class ApplicationConfig {
         return config.getAuthenticationManager();
     }
     @Bean
+    //cripter le mdp
     public BCryptPasswordEncoder PasswordEncoder() {
         return new BCryptPasswordEncoder();
     }
     @Bean
+    //configuration des autorisation
     public WebMvcConfigurer configurer(){
         return new WebMvcConfigurer() {
             @Override

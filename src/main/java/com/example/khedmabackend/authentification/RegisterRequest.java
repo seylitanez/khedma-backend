@@ -4,8 +4,8 @@ import com.example.khedmabackend.model.Addresse;
 import com.example.khedmabackend.model.Genre;
 import com.example.khedmabackend.model.Role;
 import lombok.Data;
-
 @Data
+//table d'inscription
 public class RegisterRequest {
     private String nomUtilisateur;
     private String motDePasse;
@@ -16,5 +16,4 @@ public class RegisterRequest {
     private String tel;
     private Addresse adresse;
     private Role role;
-
 }

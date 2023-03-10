@@ -18,6 +18,7 @@ import static com.example.khedmabackend.Utils.Constantes.MODERATEUR;
 public class SecurityConfiguration {
     private final JwtAuthenticationFiIter jwtAuthFilter;
     @Bean
+    //filter des autorisation d'acces
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception{
         http.csrf().disable()
                 .cors().disable()
