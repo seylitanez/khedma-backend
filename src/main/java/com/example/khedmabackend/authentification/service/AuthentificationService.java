@@ -36,7 +36,6 @@ public class AuthentificationService {
         var userDetails= userDetailsService.loadUserByUsername(authentificationRequest.getNomUtilisateur());
 
         String token=jwtService.generateToken((UserDetails) utilisateur);
-        System.out.println("token:---->:"+token);
 
         return ResponseToken.builder().token(token).build();
 

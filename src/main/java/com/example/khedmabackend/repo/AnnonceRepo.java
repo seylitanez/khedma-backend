@@ -9,6 +9,4 @@ import java.util.List;
 
 public interface AnnonceRepo extends MongoRepository<Annonce, String> {
 
-    //db.utilisateur.find({"prenom":"sabrine"},{annonces:true})
-
 }

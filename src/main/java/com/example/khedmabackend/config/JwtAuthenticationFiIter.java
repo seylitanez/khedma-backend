@@ -25,6 +25,7 @@ public class JwtAuthenticationFiIter extends OncePerRequestFilter {
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
         final String authHeder=request.getHeader("Authorization"),jwt,userEmail;
         System.out.println("authHeder = " + authHeder);
+        System.out.println(request.getRequestURI());
         if (authHeder==null||!authHeder.startsWith("Bearer ")){
             filterChain.doFilter(request,response);
             return;
@@ -34,11 +35,13 @@ public class JwtAuthenticationFiIter extends OncePerRequestFilter {
         if (userEmail!=null&& SecurityContextHolder.getContext().getAuthentication()==null){
             UserDetails userDetails=this.userDetailsService.loadUserByUsername(userEmail);
             if (jwtService.isTokenValid(jwt,userDetails)){
+                System.out.println("is valid");
                 UsernamePasswordAuthenticationToken authToken=new UsernamePasswordAuthenticationToken(
                         userDetails,null,userDetails.getAuthorities());
                 authToken.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
                 SecurityContextHolder.getContext().setAuthentication(authToken);
             }
+                System.out.println("is not valid");
         }
         filterChain.doFilter(request,response);
     }

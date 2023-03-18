@@ -10,4 +10,5 @@ import lombok.Data;
 public class Addresse {
     private String wilaya;
     private String commune;
+
 }

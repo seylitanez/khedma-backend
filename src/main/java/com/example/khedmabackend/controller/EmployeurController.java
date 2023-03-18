@@ -12,9 +12,10 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
-@RequestMapping("/api/v1/employeur")
 @RestController
+@RequestMapping("/api/v1/employeur")
 @RequiredArgsConstructor
+@CrossOrigin("*")
 public class EmployeurController {
 
 

@@ -19,12 +19,15 @@ public class SecurityConfiguration {
     private final JwtAuthenticationFiIter jwtAuthFilter;
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception{
-        http.csrf().disable()
+        //si ya un probleme dans cross origine c ici qu'il faut modifier
+
+        http
+                .csrf().disable()
                 .cors().disable()
-                .authorizeHttpRequests().requestMatchers("/api/v1/employeur/**").hasAnyAuthority(EMPLOYEUR,MODERATEUR)
+                .authorizeHttpRequests().requestMatchers("/api/v1/employeur/**").hasAnyAuthority(EMPLOYEUR)
                 .and()
                 .authorizeHttpRequests().requestMatchers("/api/v1/auth/**").permitAll()
-                .anyRequest().authenticated()
+                .anyRequest().permitAll()
                 .and()
                 .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
                 .and()
