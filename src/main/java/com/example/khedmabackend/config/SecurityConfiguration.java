@@ -18,6 +18,7 @@ import static com.example.khedmabackend.Utils.Constantes.MODERATEUR;
 public class SecurityConfiguration {
     private final JwtAuthenticationFiIter jwtAuthFilter;
     @Bean
+    //filter des autorisation d'acces
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception{
         //si ya un probleme dans cross origine c ici qu'il faut modifier
 

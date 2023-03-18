@@ -2,7 +2,6 @@ package com.example.khedmabackend.controller;
 
 
 import com.example.khedmabackend.model.Annonce;
-import com.example.khedmabackend.repo.AnnonceRepo;
 import com.example.khedmabackend.services.EmployeService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -16,17 +15,10 @@ import java.util.List;
 @RequestMapping("/api/v1/employe")
 @RequiredArgsConstructor
 public class EmployeController {
-
     private final EmployeService employeService;
-//    private final AnnonceRepo annonceRepo;
-
-
     @GetMapping("/annonces")
+    //api de list d'annonces
     public ResponseEntity<List<Annonce>> getAnnonces(){
-
-        //
-//        annonceRepo.
-
         return ResponseEntity.ok().body(employeService.getAnnonces());
     }
 }

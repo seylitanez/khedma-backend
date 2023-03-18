@@ -1,15 +1,12 @@
 package com.example.khedmabackend.model;
-
-
 import lombok.Data;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.index.Indexed;
 import org.springframework.data.mongodb.core.mapping.Document;
-
 @Document
 @Data
+//table utilistaeur
 public abstract class Utilisateur {
-
     @Id
     private String id;
     @Indexed(unique = true)
@@ -22,7 +19,6 @@ public abstract class Utilisateur {
     private String tel;
     private Addresse adresse;
     private Role role;
-
     public Utilisateur(String nomUtilisateur, String motDePasse, String adresseMail, String nom, String prenom, Genre genre, String tel, Addresse adresse,Role role) {
         this.nomUtilisateur = nomUtilisateur;
         this.motDePasse = motDePasse;
@@ -34,5 +30,4 @@ public abstract class Utilisateur {
         this.adresse = adresse;
         this.role=role;
     }
-
 }

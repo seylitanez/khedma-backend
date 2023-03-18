@@ -15,16 +15,10 @@ import java.util.List;
 @RequestMapping("api/v1/moderateur")
 @RequiredArgsConstructor
 public class ModerateurController {
-
     private final ModerateurService moderateurService;
-
-
     @GetMapping("/annonces")
+    //list d'annoce
     public ResponseEntity<List<Annonce>> getAnnonces(){
-
         return ResponseEntity.ok().body(moderateurService.getAnnonces());
     }
-
-
-
 }
