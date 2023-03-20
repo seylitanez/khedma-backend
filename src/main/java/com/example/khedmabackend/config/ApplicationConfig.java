@@ -12,7 +12,6 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.servlet.config.annotation.CorsRegistry;
 import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
@@ -52,7 +51,7 @@ public class ApplicationConfig {
             public void addCorsMappings(CorsRegistry registry) {
                 registry.addMapping("/api/v1/**")
                         .allowedMethods("*")
-                        .allowedOrigins("http://localhost:6453")
+                        .allowedOrigins("http://localhost:9710")
                         .allowedHeaders("*");
             }
             @Override

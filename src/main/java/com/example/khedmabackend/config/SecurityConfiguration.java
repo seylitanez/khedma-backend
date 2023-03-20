@@ -22,6 +22,8 @@ public class SecurityConfiguration {
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception{
         http.csrf().disable()
                 .cors().disable()
+                .authorizeHttpRequests().requestMatchers("/api/v1/employe/annonces").permitAll()
+                .and()
                 .authorizeHttpRequests().requestMatchers("/api/v1/employeur/**").hasAnyAuthority(EMPLOYEUR,MODERATEUR)
                 .and()
                 .authorizeHttpRequests().requestMatchers("/api/v1/auth/**").permitAll()
