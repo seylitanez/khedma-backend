@@ -1,6 +1,7 @@
 package com.example.khedmabackend.authentification;
 
 
+import com.example.khedmabackend.model.Role;
 import lombok.Builder;
 import lombok.Data;
 
@@ -9,4 +10,5 @@ import lombok.Data;
 //table de token
 public class ResponseToken {
     private String token;
+    private Role role;
 }

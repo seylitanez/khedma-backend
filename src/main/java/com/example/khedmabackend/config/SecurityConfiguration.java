@@ -20,15 +20,14 @@ public class SecurityConfiguration {
     @Bean
     //filter des autorisation d'acces
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception{
-        //si ya un probleme dans cross origine c ici qu'il faut modifier
-
-        http
-                .csrf().disable()
+        http.csrf().disable()
                 .cors().disable()
-                .authorizeHttpRequests().requestMatchers("/api/v1/employeur/**").hasAnyAuthority(EMPLOYEUR)
+                .authorizeHttpRequests().requestMatchers("/api/v1/employe/annonces").permitAll()
+                .and()
+                .authorizeHttpRequests().requestMatchers("/api/v1/employeur/**").hasAnyAuthority(EMPLOYEUR,MODERATEUR)
                 .and()
                 .authorizeHttpRequests().requestMatchers("/api/v1/auth/**").permitAll()
-                .anyRequest().permitAll()
+                .anyRequest().authenticated()
                 .and()
                 .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
                 .and()
