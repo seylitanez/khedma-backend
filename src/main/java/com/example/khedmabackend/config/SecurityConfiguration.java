@@ -9,8 +9,7 @@ import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
-import static com.example.khedmabackend.Utils.Constantes.EMPLOYEUR;
-import static com.example.khedmabackend.Utils.Constantes.MODERATEUR;
+import static com.example.khedmabackend.Utils.Constantes.*;
 
 @Configuration
 @EnableWebSecurity
@@ -27,6 +26,8 @@ public class SecurityConfiguration {
                 .authorizeHttpRequests().requestMatchers("/api/v1/employeur/**").hasAuthority(EMPLOYEUR)
                 .and()
                 .authorizeHttpRequests().requestMatchers("/api/v1/auth/**").permitAll()
+                .and()
+                .authorizeHttpRequests().requestMatchers("/api/v1/me").permitAll()
                 .anyRequest().authenticated()
                 .and()
                 .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)

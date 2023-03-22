@@ -30,7 +30,7 @@ public class ApplicationConfig {
                 .orElseThrow(()->new UsernameNotFoundException("User not found"));
     }
     @Bean
-    // authontifer un utilisateur
+    // authentifer un utilisateur
     public AuthenticationProvider authenticationProvider(){
         DaoAuthenticationProvider authProvider=new DaoAuthenticationProvider();
         authProvider.setUserDetailsService(userDetailsService());
@@ -53,7 +53,7 @@ public class ApplicationConfig {
         return new WebMvcConfigurer() {
             @Override
             public void addCorsMappings(CorsRegistry registry) {
-                registry.addMapping("/api/**")
+                registry.addMapping("/api/v1/**")
                         .allowedOrigins("http://localhost:9710")
                         .allowedMethods("GET", "POST")
                         .allowedHeaders("*");
