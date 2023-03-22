@@ -54,7 +54,7 @@ public class ApplicationConfig {
             @Override
             public void addCorsMappings(CorsRegistry registry) {
                 registry.addMapping("/api/**")
-                        .allowedOrigins("http://localhost:9711")
+                        .allowedOrigins("http://localhost:9710")
                         .allowedMethods("GET", "POST")
                         .allowedHeaders("*");
             }

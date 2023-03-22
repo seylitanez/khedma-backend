@@ -19,10 +19,8 @@ public class EmployeController {
     public ResponseEntity<List<Annonce>> getAnnonces(){
         return ResponseEntity.ok().body(employeService.getAnnonces());
     }
-
     @GetMapping("/search")
     public ResponseEntity<List<Annonce>> searchAnnonces(@RequestParam("motcle") String motCle){
-
         return ResponseEntity.ok().body(employeService.searchAnnonces(motCle));
     }
 }
