@@ -4,10 +4,12 @@ import com.example.khedmabackend.repo.AnnonceRepo;
 import com.example.khedmabackend.repo.UtilisateurRepo;
 import com.example.khedmabackend.services.EmployeurService;
 import lombok.RequiredArgsConstructor;
+import org.json.simple.parser.ParseException;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 
+import java.io.IOException;
 import java.util.List;
 @RequestMapping("/api/v1/employeur")
 @RestController
@@ -16,7 +18,7 @@ public class EmployeurController {
     private final EmployeurService employeurService;
     @PostMapping("/add-annonce")
     //api post d'annoce
-    public String addAnnonce(@RequestBody Annonce annonce){
+    public String addAnnonce(@RequestBody Annonce annonce) throws IOException, InterruptedException, ParseException {
         System.out.println("addAnnonce()");
         employeurService.addAnnonce(annonce);
         return "added succesfully";

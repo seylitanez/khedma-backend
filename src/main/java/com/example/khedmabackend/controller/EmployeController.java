@@ -5,9 +5,7 @@ import com.example.khedmabackend.model.Annonce;
 import com.example.khedmabackend.services.EmployeService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -20,5 +18,11 @@ public class EmployeController {
     //api de list d'annonces
     public ResponseEntity<List<Annonce>> getAnnonces(){
         return ResponseEntity.ok().body(employeService.getAnnonces());
+    }
+
+    @GetMapping("/search")
+    public ResponseEntity<List<Annonce>> searchAnnonces(@RequestParam("motcle") String motCle){
+
+        return ResponseEntity.ok().body(employeService.searchAnnonces(motCle));
     }
 }

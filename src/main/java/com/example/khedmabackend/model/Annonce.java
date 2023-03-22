@@ -15,6 +15,9 @@ public class Annonce {
     private String nom;
     private Categorie categorie;
     private String sousCategorie;
+    private String descriptionFr;
+    private String descriptionAr;
+    private Addresse adresse;
     private Float salaireDeBase;
     private Jours[] journees=new Jours[7];
     private Date date;

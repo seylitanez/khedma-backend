@@ -24,7 +24,7 @@ public class SecurityConfiguration {
                 .cors().disable()
                 .authorizeHttpRequests().requestMatchers("/api/v1/employe/annonces").permitAll()
                 .and()
-                .authorizeHttpRequests().requestMatchers("/api/v1/employeur/**").hasAnyAuthority(EMPLOYEUR,MODERATEUR)
+                .authorizeHttpRequests().requestMatchers("/api/v1/employeur/**").hasAuthority(EMPLOYEUR)
                 .and()
                 .authorizeHttpRequests().requestMatchers("/api/v1/auth/**").permitAll()
                 .anyRequest().authenticated()

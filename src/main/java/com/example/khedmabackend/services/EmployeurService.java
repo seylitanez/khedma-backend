@@ -5,16 +5,24 @@ import com.example.khedmabackend.model.Utilisateur;
 import com.example.khedmabackend.repo.AnnonceRepo;
 import com.example.khedmabackend.repo.UtilisateurRepo;
 import lombok.RequiredArgsConstructor;
+import org.json.simple.parser.ParseException;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
+import java.io.IOException;
 import java.util.List;
 @Service
 @RequiredArgsConstructor
 public class EmployeurService {
     private final UtilisateurRepo utilisateurRepo;
     private final AnnonceRepo annonceRepo;
-    public void addAnnonce(Annonce annonce){
+
+    public void addAnnonce(Annonce annonce) throws IOException, InterruptedException, ParseException {
+//        Boolean hasArabeDescription= annonce.getDescriptionAr()==null?false:true;
+//
+//        if (!hasArabeDescription)
+//            annonce.setDescriptionAr(ServceTraduction.traduire(annonce.getDescriptionFr()));
+
         var username= SecurityContextHolder.getContext().getAuthentication().getName();
         Employeur employeur= (Employeur) utilisateurRepo.findBynomUtilisateur(username).orElseThrow();
         annonceRepo.insert(annonce);
