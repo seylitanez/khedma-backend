@@ -9,15 +9,10 @@ import org.springframework.stereotype.Service;
 @RequiredArgsConstructor
 @Service
 public class MeService {
-
     private final UtilisateurRepo utilisateurRepo;
-
     public Utilisateur me(){
         String myName=SecurityContextHolder.getContext().getAuthentication().getName();
         Utilisateur utilisateur= utilisateurRepo.findBynomUtilisateur(myName).orElseThrow();
-
         return utilisateur;
-
     }
-
 }
