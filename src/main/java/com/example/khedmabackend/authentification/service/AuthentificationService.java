@@ -11,12 +11,11 @@ import com.example.khedmabackend.model.Utilisateur;
 import com.example.khedmabackend.repo.UtilisateurRepo;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
-
+import static com.example.khedmabackend.Utils.Constantes.*;
 @RequiredArgsConstructor
 @Service
 public class AuthentificationService {
@@ -30,7 +29,7 @@ public class AuthentificationService {
         Utilisateur utilisateur= utilisateurRepo.findBynomUtilisateur(authentificationRequest.getNomUtilisateur()).orElseThrow();
         var userDetails= userDetailsService.loadUserByUsername(authentificationRequest.getNomUtilisateur());
         String token=jwtService.generateToken((UserDetails) utilisateur);
-        System.out.println("token:---->:"+token);
+        System.out.println(GREEN+"token:---->:"+token);
         return ResponseToken.builder().token(token).role(utilisateur.getRole()).build();
     }
     //sauvgarder un nouveux utilisateur et cree son token de conection
@@ -40,7 +39,7 @@ public class AuthentificationService {
         Utilisateur utilisateur = null;
         switch (register.getRole()){
             case EMPLOYE -> {
-                System.out.println("employe");
+                System.out.println(PURPLE+"employe");
                 utilisateurRepo.insert(
                         utilisateur=new Employe(
                                 register.getNomUtilisateur(),
@@ -55,7 +54,7 @@ public class AuthentificationService {
                         ));
             }
             case EMPLOYEUR -> {
-                System.out.println("employeur");
+                System.out.println(PURPLE+"employeur");
                 utilisateurRepo.insert(
                         utilisateur=new Employeur(
                                 register.getNomUtilisateur(),
@@ -70,7 +69,7 @@ public class AuthentificationService {
                         ));
             }
             case MODERATEUR -> {
-                System.out.println("moderateur");
+                System.out.println(PURPLE+"moderateur");
                 utilisateurRepo.insert(
                         utilisateur = new Moderateur(
                                 register.getNomUtilisateur(),
@@ -85,7 +84,7 @@ public class AuthentificationService {
                         ));
             }
         }
-        if (utilisateur==null)throw new Exception("user null");
+        if (utilisateur==null)throw new Exception(RED+"user null");
         String token=jwtService.generateToken((UserDetails) utilisateur);
         return ResponseToken.builder().token(token).role(utilisateur.getRole()).build();
     }

@@ -12,7 +12,7 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.web.authentication.WebAuthenticationDetailsSource;
 import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
-
+import static com.example.khedmabackend.Utils.Constantes.*;
 import java.io.IOException;
 
 @Component
@@ -24,8 +24,8 @@ public class JwtAuthenticationFiIter extends OncePerRequestFilter {
     //verification du token
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
         final String authHeder=request.getHeader("Authorization"),jwt,userEmail;
-        System.out.println("authHeder = " + authHeder);
-        System.out.println(request.getRequestURI());
+        System.out.println(BLUE+"authHeder = " + authHeder);
+        System.out.println(CYAN+request.getRequestURI()+RED);
         if (authHeder==null||!authHeder.startsWith("Bearer ")){
             filterChain.doFilter(request,response);
             return;
@@ -41,7 +41,7 @@ public class JwtAuthenticationFiIter extends OncePerRequestFilter {
                 authToken.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
                 SecurityContextHolder.getContext().setAuthentication(authToken);
             }
-                System.out.println("is not valid");
+                System.out.println(RED+"is not valid");
         }
         filterChain.doFilter(request,response);
     }
