@@ -13,7 +13,8 @@ public class Annonce {
     @Id
     private String id;
     private String nom;
-    private Categorie categorie;
+//    private Categorie categorie;
+    private String categorie;
     private String sousCategorie;
     private String descriptionFr;
     private String descriptionAr;

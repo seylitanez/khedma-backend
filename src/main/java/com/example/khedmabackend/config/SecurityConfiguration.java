@@ -19,6 +19,7 @@ public class SecurityConfiguration {
     @Bean
     //filter des autorisation d'acces
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception{
+
         http.csrf().disable()
                 .cors().disable()
                 .authorizeHttpRequests().requestMatchers("/api/v1/employe/**").permitAll()
@@ -33,6 +34,8 @@ public class SecurityConfiguration {
                 .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
                 .and()
                 .addFilterBefore(jwtAuthFilter, UsernamePasswordAuthenticationFilter.class);
+
+
         return http.build();
     }
 }
