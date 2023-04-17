@@ -30,7 +30,7 @@ public class AuthentificationService {
         var userDetails= userDetailsService.loadUserByUsername(authentificationRequest.getNomUtilisateur());
         String token=jwtService.generateToken((UserDetails) utilisateur,utilisateur.getRole());
         System.out.println(GREEN+"token:---->:"+token);
-        return ResponseToken.builder().token(token).role(utilisateur.getRole()).build();
+        return ResponseToken.builder().token(token).build();
     }
     //sauvgarder un nouveux utilisateur et cree son token de conection
     public ResponseToken save(RegisterRequest register) throws Exception {
@@ -86,6 +86,6 @@ public class AuthentificationService {
         }
         if (utilisateur==null)throw new Exception(RED+"user null");
         String token=jwtService.generateToken((UserDetails) utilisateur,utilisateur.getRole());
-        return ResponseToken.builder().token(token).role(utilisateur.getRole()).build();
+        return ResponseToken.builder().token(token).build();
     }
 }
