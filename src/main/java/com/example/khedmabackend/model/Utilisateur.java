@@ -19,6 +19,8 @@ public abstract class Utilisateur {
     private String tel;
     private Addresse adresse;
     private Role role;
+
+    private Boolean valide;
     public Utilisateur(String nomUtilisateur, String motDePasse, String adresseMail, String nom, String prenom, Genre genre, String tel, Addresse adresse,Role role) {
         this.nomUtilisateur = nomUtilisateur;
         this.motDePasse = motDePasse;
@@ -29,5 +31,6 @@ public abstract class Utilisateur {
         this.tel = tel;
         this.adresse = adresse;
         this.role=role;
+        this.valide=false;
     }
 }
