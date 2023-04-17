@@ -7,5 +7,5 @@ spring:
       authentication-database: admin
       auto-index-creation: true
 server:
-  port: 9631
+  port: 9630
 

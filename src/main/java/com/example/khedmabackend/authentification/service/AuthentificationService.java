@@ -28,7 +28,7 @@ public class AuthentificationService {
         var usernamePasswordAuthenticationToken= new UsernamePasswordAuthenticationToken(authentificationRequest.getNomUtilisateur(),authentificationRequest.getMotDePasse());
         Utilisateur utilisateur= utilisateurRepo.findBynomUtilisateur(authentificationRequest.getNomUtilisateur()).orElseThrow();
         var userDetails= userDetailsService.loadUserByUsername(authentificationRequest.getNomUtilisateur());
-        String token=jwtService.generateToken((UserDetails) utilisateur);
+        String token=jwtService.generateToken((UserDetails) utilisateur,utilisateur.getRole());
         System.out.println(GREEN+"token:---->:"+token);
         return ResponseToken.builder().token(token).role(utilisateur.getRole()).build();
     }
@@ -85,7 +85,7 @@ public class AuthentificationService {
             }
         }
         if (utilisateur==null)throw new Exception(RED+"user null");
-        String token=jwtService.generateToken((UserDetails) utilisateur);
+        String token=jwtService.generateToken((UserDetails) utilisateur,utilisateur.getRole());
         return ResponseToken.builder().token(token).role(utilisateur.getRole()).build();
     }
 }

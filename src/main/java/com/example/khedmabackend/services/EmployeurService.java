@@ -6,10 +6,13 @@ import com.example.khedmabackend.repo.AnnonceRepo;
 import com.example.khedmabackend.repo.UtilisateurRepo;
 import lombok.RequiredArgsConstructor;
 import org.json.simple.parser.ParseException;
+import org.springframework.data.mongodb.core.aggregation.ArrayOperators;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
 import java.io.IOException;
+import java.time.Instant;
+import java.util.Date;
 import java.util.List;
 @Service
 @RequiredArgsConstructor
@@ -22,6 +25,7 @@ public class EmployeurService {
 //
 //        if (!hasArabeDescription)
 //            annonce.setDescriptionAr(ServceTraduction.traduire(annonce.getDescriptionFr()));
+        annonce.setDate(Date.from(Instant.now()));
 
         var username= SecurityContextHolder.getContext().getAuthentication().getName();
         Employeur employeur= (Employeur) utilisateurRepo.findBynomUtilisateur(username).orElseThrow();
