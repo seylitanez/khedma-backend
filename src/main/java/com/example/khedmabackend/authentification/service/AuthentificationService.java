@@ -29,7 +29,7 @@ public class AuthentificationService {
         Utilisateur utilisateur= utilisateurRepo.findByadresseMail(authentificationRequest.getAdresseMail()).orElseThrow();
         System.out.println(utilisateur);
         var userDetails= userDetailsService.loadUserByUsername(authentificationRequest.getAdresseMail());
-        String token=jwtService.generateToken((UserDetails) utilisateur,utilisateur.getRole());
+        String token=jwtService.generateToken((UserDetails) utilisateur,utilisateur);
         System.out.println(GREEN+"token:---->:"+token);
         return ResponseToken.builder().token(token).build();
     }
@@ -83,7 +83,7 @@ public class AuthentificationService {
             }
         }
         if (utilisateur==null)throw new Exception(RED+"user null");
-        String token=jwtService.generateToken((UserDetails) utilisateur,utilisateur.getRole());
+        String token=jwtService.generateToken((UserDetails) utilisateur,utilisateur);
         return ResponseToken.builder().token(token).build();
     }
 }

@@ -1,6 +1,7 @@
 package com.example.khedmabackend.config;
 
 import com.example.khedmabackend.model.Role;
+import com.example.khedmabackend.model.Utilisateur;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
@@ -25,14 +26,15 @@ public class JwtService {
         final Claims claims=extractAllClaims(token);
         return claimsResolver.apply(claims);
     }
-    public String generateToken(UserDetails userDetails,Role role){
-        return generateToken(new HashMap<>(),userDetails,role);
+    public String generateToken(UserDetails userDetails, Utilisateur utilisateur){
+        return generateToken(new HashMap<>(),userDetails,utilisateur);
     }
-    public String generateToken(Map<String,Object> extraClaims, UserDetails userDetails,Role role){
+    public String generateToken(Map<String,Object> extraClaims, UserDetails userDetails,Utilisateur utilisateur){
         return Jwts.builder().setClaims(extraClaims)
                 .setSubject(userDetails.getUsername())
                 .setIssuedAt(new Date(System.currentTimeMillis()))
-                .claim("role",role)
+                .claim("role",utilisateur.getRole())
+                .claim("username",utilisateur.getNom()+"_"+utilisateur.getPrenom())
                 .setExpiration(new Date(System.currentTimeMillis()+1000*60*60*24))
                 .signWith(getSignInKey(), SignatureAlgorithm.HS256)
                 .compact();
