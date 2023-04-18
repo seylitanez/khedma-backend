@@ -29,7 +29,6 @@ public class JwtService {
         return generateToken(new HashMap<>(),userDetails,role);
     }
     public String generateToken(Map<String,Object> extraClaims, UserDetails userDetails,Role role){
-
         return Jwts.builder().setClaims(extraClaims)
                 .setSubject(userDetails.getUsername())
                 .setIssuedAt(new Date(System.currentTimeMillis()))
@@ -42,7 +41,6 @@ public class JwtService {
         final String username=extractUsername(token);
         return (username.equals(userDetails.getUsername())&& !isTokenExpired(token));
     }
-
     private boolean isTokenExpired(String token) {
         return extractExpiration(token).before(new Date());
     }
@@ -54,7 +52,6 @@ public class JwtService {
     private Claims extractAllClaims(String token){
         return Jwts.parserBuilder().setSigningKey(getSignInKey()).build().parseClaimsJws(token).getBody();
     }
-
     private Key getSignInKey() {
         byte keyBites[]= Decoders.BASE64.decode(SECRET_KEY);
         return Keys.hmacShaKeyFor(keyBites);

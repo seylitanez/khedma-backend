@@ -10,5 +10,4 @@ import lombok.Data;
 //table de token
 public class ResponseToken {
     private String token;
-    private Role role;
 }
