@@ -12,7 +12,7 @@ public class MeService {
     private final UtilisateurRepo utilisateurRepo;
     public Utilisateur me(){
         String myName=SecurityContextHolder.getContext().getAuthentication().getName();
-        Utilisateur utilisateur= utilisateurRepo.findBynomUtilisateur(myName).orElseThrow();
+        Utilisateur utilisateur= utilisateurRepo.findByadresseMail(myName).orElseThrow();
         return utilisateur;
     }
 }

@@ -8,9 +8,10 @@ import static com.example.khedmabackend.model.Role.MODERATEUR;
 @Document
 //table moderateur
 public class Moderateur extends Utilisateur implements  UserDetails {
-    public Moderateur(String nomUtilisateur, String motDePasse, String adresseMail, String nom, String prenom, Genre genre, String tel, Addresse adresse, Role role) {
-        super(nomUtilisateur, motDePasse, adresseMail, nom, prenom, genre, tel, adresse,role);
+    public Moderateur(String motDePasse, String adresseMail, String nom, String prenom, Genre genre, String tel, Addresse adresse, Role role) {
+        super(motDePasse, adresseMail, nom, prenom, genre, tel, adresse, role);
     }
+
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
         return List.of(() -> MODERATEUR.name());
@@ -21,7 +22,7 @@ public class Moderateur extends Utilisateur implements  UserDetails {
     }
     @Override
     public String getUsername() {
-        return this.getNomUtilisateur();
+        return this.getAdresseMail();
     }
     @Override
     public boolean isAccountNonExpired() {

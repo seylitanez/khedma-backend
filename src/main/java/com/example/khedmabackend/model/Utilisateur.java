@@ -9,9 +9,8 @@ import org.springframework.data.mongodb.core.mapping.Document;
 public abstract class Utilisateur {
     @Id
     private String id;
-    @Indexed(unique = true)
-    private String nomUtilisateur;
     private String motDePasse;
+    @Indexed(unique = true)
     private String adresseMail;
     private String nom;
     private String prenom;
@@ -21,8 +20,7 @@ public abstract class Utilisateur {
     private Role role;
 
     private Boolean valide;
-    public Utilisateur(String nomUtilisateur, String motDePasse, String adresseMail, String nom, String prenom, Genre genre, String tel, Addresse adresse,Role role) {
-        this.nomUtilisateur = nomUtilisateur;
+    public Utilisateur( String motDePasse, String adresseMail, String nom, String prenom, Genre genre, String tel, Addresse adresse,Role role) {
         this.motDePasse = motDePasse;
         this.adresseMail = adresseMail;
         this.nom = nom;

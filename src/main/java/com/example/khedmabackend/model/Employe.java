@@ -13,9 +13,10 @@ import static com.example.khedmabackend.model.Role.EMPLOYE;
 @Document
 //table emploiyer
 public class Employe extends Utilisateur implements UserDetails {
-    public Employe(String nomUtilisateur, String motDePasse, String adresseMail, String nom, String prenom, Genre genre, String tel, Addresse adresse,Role role) {
-        super(nomUtilisateur, motDePasse, adresseMail, nom, prenom, genre, tel, adresse,role);
+    public Employe(String motDePasse, String adresseMail, String nom, String prenom, Genre genre, String tel, Addresse adresse, Role role) {
+        super(motDePasse, adresseMail, nom, prenom, genre, tel, adresse, role);
     }
+
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
         return List.of(() -> EMPLOYE.name());
@@ -28,7 +29,7 @@ public class Employe extends Utilisateur implements UserDetails {
     }
     @Override
     public String getUsername() {
-        return this.getNomUtilisateur();
+        return this.getAdresseMail();
     }
     @Override
     public boolean isAccountNonExpired() {

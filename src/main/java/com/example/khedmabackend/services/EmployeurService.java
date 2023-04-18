@@ -28,18 +28,18 @@ public class EmployeurService {
         annonce.setDate(Date.from(Instant.now()));
 
         var username= SecurityContextHolder.getContext().getAuthentication().getName();
-        Employeur employeur= (Employeur) utilisateurRepo.findBynomUtilisateur(username).orElseThrow();
+        Employeur employeur= (Employeur) utilisateurRepo.findByadresseMail(username).orElseThrow();
         annonceRepo.insert(annonce);
         employeur.getAnnonces().add(annonce);
         utilisateurRepo.save(employeur);
     }
     public List<Annonce> getAnnonces(){
         var employeurUsername=SecurityContextHolder.getContext().getAuthentication().getName();
-        Employeur employeur= (Employeur) utilisateurRepo.findBynomUtilisateur(employeurUsername).orElseThrow();
+        Employeur employeur= (Employeur) utilisateurRepo.findByadresseMail(employeurUsername).orElseThrow();
         return (employeur.getAnnonces());
     }
     public Utilisateur trouverUtilisateur(String username){
-        var utilisateur= utilisateurRepo.findBynomUtilisateur(username).orElseThrow();
+        var utilisateur= utilisateurRepo.findByadresseMail(username).orElseThrow();
         return utilisateur;
     }
     public List<Utilisateur> allUtilisateur(){

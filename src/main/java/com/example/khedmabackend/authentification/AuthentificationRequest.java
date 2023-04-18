@@ -8,6 +8,6 @@ import lombok.Data;
 @Data
 //table de conection
 public class AuthentificationRequest {
-    private String nomUtilisateur;
+    private String adresseMail;
     private String motDePasse;
 }

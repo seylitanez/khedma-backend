@@ -7,7 +7,7 @@ import java.util.List;
 import java.util.Optional;
 //utilistaeur repository
 public interface UtilisateurRepo extends MongoRepository<Utilisateur,String>, ServicePublication {
-    Optional<Utilisateur> findBynomUtilisateur(String nomUtilisateur);
+    Optional<Utilisateur> findByadresseMail(String adresseMail);
     //db.utilisateur.find({"prenom":"sabrine"},{annonces:true})
     List<Utilisateur> findByprenom(String prenom);
 }

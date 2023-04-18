@@ -25,9 +25,10 @@ public class AuthentificationService {
     private final BCryptPasswordEncoder passwordEncoder;
     //cree une token pour un utilisateur qui se connect
     public ResponseToken Authenticate(AuthentificationRequest authentificationRequest){
-        var usernamePasswordAuthenticationToken= new UsernamePasswordAuthenticationToken(authentificationRequest.getNomUtilisateur(),authentificationRequest.getMotDePasse());
-        Utilisateur utilisateur= utilisateurRepo.findBynomUtilisateur(authentificationRequest.getNomUtilisateur()).orElseThrow();
-        var userDetails= userDetailsService.loadUserByUsername(authentificationRequest.getNomUtilisateur());
+        var usernamePasswordAuthenticationToken= new UsernamePasswordAuthenticationToken(authentificationRequest.getAdresseMail(),authentificationRequest.getMotDePasse());
+        Utilisateur utilisateur= utilisateurRepo.findByadresseMail(authentificationRequest.getAdresseMail()).orElseThrow();
+        System.out.println(utilisateur);
+        var userDetails= userDetailsService.loadUserByUsername(authentificationRequest.getAdresseMail());
         String token=jwtService.generateToken((UserDetails) utilisateur,utilisateur.getRole());
         System.out.println(GREEN+"token:---->:"+token);
         return ResponseToken.builder().token(token).role(utilisateur.getRole()).build();
@@ -42,7 +43,6 @@ public class AuthentificationService {
                 System.out.println(PURPLE+"employe");
                 utilisateurRepo.insert(
                         utilisateur=new Employe(
-                                register.getNomUtilisateur(),
                                 motDePasse,
                                 register.getAdresseMail(),
                                 register.getNom(),
@@ -57,7 +57,6 @@ public class AuthentificationService {
                 System.out.println(PURPLE+"employeur");
                 utilisateurRepo.insert(
                         utilisateur=new Employeur(
-                                register.getNomUtilisateur(),
                                 motDePasse,
                                 register.getAdresseMail(),
                                 register.getNom(),
@@ -72,7 +71,6 @@ public class AuthentificationService {
                 System.out.println(PURPLE+"moderateur");
                 utilisateurRepo.insert(
                         utilisateur = new Moderateur(
-                                register.getNomUtilisateur(),
                                 motDePasse,
                                 register.getAdresseMail(),
                                 register.getNom(),

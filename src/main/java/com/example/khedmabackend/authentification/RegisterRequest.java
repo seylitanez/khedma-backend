@@ -7,7 +7,6 @@ import lombok.Data;
 @Data
 //table d'inscription
 public class RegisterRequest {
-    private String nomUtilisateur;
     private String motDePasse;
     private String adresseMail;
     private String nom;
