@@ -10,11 +10,19 @@ import com.example.khedmabackend.model.Moderateur;
 import com.example.khedmabackend.model.Utilisateur;
 import com.example.khedmabackend.repo.UtilisateurRepo;
 import lombok.RequiredArgsConstructor;
+import org.apache.tomcat.util.http.fileupload.IOUtils;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.multipart.MultipartFile;
+
+import java.io.FileOutputStream;
+import java.io.IOException;
+
 import static com.example.khedmabackend.Utils.Constantes.*;
 @RequiredArgsConstructor
 @Service
@@ -33,8 +41,13 @@ public class AuthentificationService {
         System.out.println(GREEN+"token:---->:"+token);
         return ResponseToken.builder().token(token).build();
     }
+
+
+
+
     //sauvgarder un nouveux utilisateur et cree son token de conection
     public ResponseToken save(RegisterRequest register) throws Exception {
+//        IOUtils.copy(file.getInputStream(),new FileOutputStream("cv.png"));
         System.out.println("save");
         var motDePasse= passwordEncoder.encode(register.getMotDePasse());
         Utilisateur utilisateur = null;

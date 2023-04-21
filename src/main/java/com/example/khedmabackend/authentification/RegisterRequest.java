@@ -4,6 +4,8 @@ import com.example.khedmabackend.model.Addresse;
 import com.example.khedmabackend.model.Genre;
 import com.example.khedmabackend.model.Role;
 import lombok.Data;
+import org.springframework.web.multipart.MultipartFile;
+
 @Data
 //table d'inscription
 public class RegisterRequest {

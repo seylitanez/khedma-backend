@@ -9,6 +9,6 @@ import java.util.List;
 public interface AnnonceRepo extends MongoRepository<Annonce, String> {
 
     // requet personalisé il va chercher si le mot cles dans nom de l'annonce et la categorie et la description
-    @Query("{$or: [ { nom: { $regex: ?0 } }, { categorie: { $regex: ?0 } }, { descriptionFr: { $regex: ?0 } }]}")
+    @Query("{$or: [ { nom: { $regex: ?0 , $options: 'i' } },{ 'adresse.wilaya' : {$regex:?0, $options: 'i'}},{ 'adresse.commune' : {$regex:?0, $options: 'i'}}, { categorie: { $regex: ?0 , $options: 'i'} }, { descriptionFr: { $regex: ?0  , $options: 'i'} },{ descriptionAr: { $regex: ?0 , $options: 'i'} }]}")
     public List<Annonce> searchAnnonces(String motCle);
 }

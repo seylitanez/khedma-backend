@@ -11,8 +11,10 @@ import java.util.List;
 import static com.example.khedmabackend.model.Role.EMPLOYE;
 
 @Document
-//table emploiyer
+//table employer
 public class Employe extends Utilisateur implements UserDetails {
+
+
     public Employe(String motDePasse, String adresseMail, String nom, String prenom, Genre genre, String tel, Addresse adresse, Role role) {
         super(motDePasse, adresseMail, nom, prenom, genre, tel, adresse, role);
     }
