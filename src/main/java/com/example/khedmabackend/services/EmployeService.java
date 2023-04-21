@@ -1,5 +1,6 @@
 package com.example.khedmabackend.services;
 import com.example.khedmabackend.model.Annonce;
+import com.example.khedmabackend.model.Utilisateur;
 import com.example.khedmabackend.repo.AnnonceRepo;
 import com.example.khedmabackend.repo.UtilisateurRepo;
 import lombok.RequiredArgsConstructor;
@@ -16,7 +17,22 @@ public class EmployeService {
         return annonceRepo.findAll();
     }
     public List<Annonce> searchAnnonces(String motCle){
-
         return annonceRepo.searchAnnonces(motCle);
+    }
+    public Utilisateur updateEmploye(String email, String nom, String prenom, String upemail, String tel){
+        Utilisateur utilisateur =(Utilisateur) utilisateurRepo.findByadresseMail(email).orElseThrow();
+        if(nom!=null && nom.length()>0 && !nom.equals(utilisateur.getNom())){
+            utilisateur.setNom(nom);
+        }
+        if(prenom!=null && prenom.length()>0 && !prenom.equals(utilisateur.getPrenom())){
+            utilisateur.setPrenom(prenom);
+        }
+        if(upemail!=null && upemail.length()>0 && !upemail.equals(utilisateur.getAdresseMail())){
+            utilisateur.setAdresseMail(upemail);
+        }
+        if(tel!=null && tel.length()>0 && !tel.equals(utilisateur.getTel())){
+            utilisateur.setTel(tel);
+        }
+        return utilisateurRepo.save(utilisateur);
     }
 }

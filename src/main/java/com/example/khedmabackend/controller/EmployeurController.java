@@ -18,7 +18,7 @@ public class EmployeurController {
     private final EmployeurService employeurService;
     @PostMapping("/add-annonce")
     //api post d'annoce
-    public String addAnnonce(@RequestBody Annonce annonce) throws IOException, InterruptedException, ParseException {
+    public String addAnnonce(@RequestBody Annonce annonce) throws Exception {
         System.out.println("addAnnonce()");
         employeurService.addAnnonce(annonce);
         return "added succesfully";

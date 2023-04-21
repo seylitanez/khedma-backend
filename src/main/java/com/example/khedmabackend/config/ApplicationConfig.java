@@ -46,7 +46,6 @@ public class ApplicationConfig {
     public BCryptPasswordEncoder PasswordEncoder() {
         return new BCryptPasswordEncoder();
     }
-
     @Bean
     //configuration des autorisation
     public WebMvcConfigurer configurer(){
@@ -58,7 +57,6 @@ public class ApplicationConfig {
                         .allowedMethods("GET", "POST")
                         .allowedHeaders("*");
             }
-
             @Override
             public void addResourceHandlers(ResourceHandlerRegistry registry) {
                 registry.addResourceHandler("/images/**").addResourceLocations("file:images/");

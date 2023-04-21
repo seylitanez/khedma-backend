@@ -20,13 +20,11 @@ public class EmployeurService {
     private final UtilisateurRepo utilisateurRepo;
     private final AnnonceRepo annonceRepo;
 
-    public void addAnnonce(Annonce annonce) throws IOException, InterruptedException, ParseException {
+    public void addAnnonce(Annonce annonce) throws Exception {
 //        Boolean hasArabeDescription= annonce.getDescriptionAr()==null?false:true;
-//
 //        if (!hasArabeDescription)
 //            annonce.setDescriptionAr(ServceTraduction.traduire(annonce.getDescriptionFr()));
         annonce.setDate(Date.from(Instant.now()));
-
         var username= SecurityContextHolder.getContext().getAuthentication().getName();
         Employeur employeur= (Employeur) utilisateurRepo.findByadresseMail(username).orElseThrow();
         annonceRepo.insert(annonce);
