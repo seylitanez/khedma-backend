@@ -41,10 +41,6 @@ public class AuthentificationService {
         System.out.println(GREEN+"token:---->:"+token);
         return ResponseToken.builder().token(token).build();
     }
-
-
-
-
     //sauvgarder un nouveux utilisateur et cree son token de conection
     public ResponseToken save(RegisterRequest register) throws Exception {
 //        IOUtils.copy(file.getInputStream(),new FileOutputStream("cv.png"));
