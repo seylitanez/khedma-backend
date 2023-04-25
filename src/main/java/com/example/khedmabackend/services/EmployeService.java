@@ -19,16 +19,13 @@ public class EmployeService {
     public List<Annonce> searchAnnonces(String motCle){
         return annonceRepo.searchAnnonces(motCle);
     }
-    public Utilisateur updateEmploye(String email, String nom, String prenom, String upemail, String tel){
+    public Utilisateur updateEmploye(String email, String nom, String prenom, String tel){
         Utilisateur utilisateur =(Utilisateur) utilisateurRepo.findByadresseMail(email).orElseThrow();
         if(nom!=null && nom.length()>0 && !nom.equals(utilisateur.getNom())){
             utilisateur.setNom(nom);
         }
         if(prenom!=null && prenom.length()>0 && !prenom.equals(utilisateur.getPrenom())){
             utilisateur.setPrenom(prenom);
-        }
-        if(upemail!=null && upemail.length()>0 && !upemail.equals(utilisateur.getAdresseMail())){
-            utilisateur.setAdresseMail(upemail);
         }
         if(tel!=null && tel.length()>0 && !tel.equals(utilisateur.getTel())){
             utilisateur.setTel(tel);

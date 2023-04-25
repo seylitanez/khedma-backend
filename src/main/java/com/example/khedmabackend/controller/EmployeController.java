@@ -24,8 +24,8 @@ public class EmployeController {
     public ResponseEntity<List<Annonce>> searchAnnonces(@RequestParam("motcle") String motCle){
         return ResponseEntity.ok().body(employeService.searchAnnonces(motCle));
     }
-    @PutMapping("update/{email}")
-    public ResponseEntity<Utilisateur> updateUser(@PathVariable("email")String email,@RequestParam(required = false) String nom,@RequestParam(required = false) String prenom,@RequestParam(required = false) String upemail,@RequestParam(required = false) String tel){
-        return ResponseEntity.ok().body(employeService.updateEmploye(email,nom,prenom,upemail,tel));
+    @PutMapping("/update/{email}")
+    public ResponseEntity<Utilisateur> updateUser(@PathVariable("email")String email,@RequestParam(required = false) String nom,@RequestParam(required = false) String prenom,@RequestParam(required = false) String tel){
+        return ResponseEntity.ok().body(employeService.updateEmploye(email,nom,prenom,tel));
     }
 }
