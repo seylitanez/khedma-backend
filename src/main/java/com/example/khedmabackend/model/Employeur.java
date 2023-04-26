@@ -11,6 +11,12 @@ import static com.example.khedmabackend.model.Role.EMPLOYEUR;
 @Document
 //table employeur
 public class Employeur extends Utilisateur implements UserDetails {
+    public Employeur(String motDePasse, String adresseMail, String nom, String prenom, Genre genre, String tel, Addresse adresse, Role role, String entreprise) {
+        super(motDePasse, adresseMail, nom, prenom, genre, tel, adresse, role);
+        this.entreprise = entreprise;
+    }
+
+    private String entreprise;
     public List<Annonce> getAnnonces() {
         return annonces;
     }
