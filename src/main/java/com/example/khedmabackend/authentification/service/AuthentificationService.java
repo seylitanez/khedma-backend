@@ -33,11 +33,8 @@ public class AuthentificationService {
     private final BCryptPasswordEncoder passwordEncoder;
     //cree une token pour un utilisateur qui se connect
     public ResponseToken Authenticate(AuthentificationRequest authentificationRequest){
-        System.out.println("avant authtification");
         var usernamePasswordAuthenticationToken= new UsernamePasswordAuthenticationToken(authentificationRequest.getAdresseMail(),authentificationRequest.getMotDePasse());
-        System.out.println("apres authtification");
         Utilisateur utilisateur= utilisateurRepo.findByadresseMail(authentificationRequest.getAdresseMail()).orElseThrow();
-        System.out.println(utilisateur);
         var userDetails= userDetailsService.loadUserByUsername(authentificationRequest.getAdresseMail());
         String token=jwtService.generateToken((UserDetails) utilisateur,utilisateur);
         System.out.println(GREEN+"token:---->:"+token);

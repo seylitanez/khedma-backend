@@ -11,23 +11,22 @@ import static com.example.khedmabackend.model.Role.EMPLOYEUR;
 @Document
 //table employeur
 public class Employeur extends Utilisateur implements UserDetails {
+    private String entreprise;
+    private List<Annonce> annonces=new ArrayList<>();
     public Employeur(String motDePasse, String adresseMail, String nom, String prenom, Genre genre, String tel, Addresse adresse, Role role, String entreprise) {
         super(motDePasse, adresseMail, nom, prenom, genre, tel, adresse, role);
         this.entreprise = entreprise;
     }
-
-    private String entreprise;
     public List<Annonce> getAnnonces() {
         return annonces;
     }
     public void setAnnonces(List<Annonce> annonces) {
         this.annonces = annonces;
     }
-    private List<Annonce> annonces=new ArrayList<>();
-    public Employeur(String motDePasse, String adresseMail, String nom, String prenom, Genre genre, String tel, Addresse adresse, Role role) {
-        super(motDePasse, adresseMail, nom, prenom, genre, tel, adresse, role);
-        this.annonces = annonces;
-    }
+//    public Employeur(String motDePasse, String adresseMail, String nom, String prenom, Genre genre, String tel, Addresse adresse, Role role) {
+//        super(motDePasse, adresseMail, nom, prenom, genre, tel, adresse, role);
+//        this.annonces = annonces;
+//    }
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
         return List.of(() -> EMPLOYEUR.name());
