@@ -29,4 +29,8 @@ public class EmployeController {
     public ResponseEntity<Utilisateur> updateUser(@PathVariable("email")String email,@RequestParam(required = false) String nom,@RequestParam(required = false) String prenom,@RequestParam(required = false) String tel){
         return ResponseEntity.ok().body(employeService.updateEmploye(email,nom,prenom,tel));
     }
+    @GetMapping("/favoris")
+    public ResponseEntity<List<Annonce>> getFavoris(@RequestParam("email") String email){
+        return ResponseEntity.ok().body(employeService.getFavoris(email));
+    }
 }

@@ -54,13 +54,10 @@ public class AuthentificationService {
 //        IOUtils.copy(file.getInputStream(),new FileOutputStream("cv.png"));
         System.out.println("save");
         var motDePasse= passwordEncoder.encode(register.getMotDePasse());
-
-
         var adresseMailExist=
                 utilisateurRepo.
                 findByadresseMail(register.getAdresseMail())
                         .isPresent();
-
 
         if (adresseMailExist) throw new IllegalStateException("user already exist");
 
