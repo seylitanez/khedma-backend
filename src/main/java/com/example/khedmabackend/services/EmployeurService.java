@@ -3,6 +3,7 @@ import com.example.khedmabackend.model.Annonce;
 import com.example.khedmabackend.model.Employeur;
 import com.example.khedmabackend.model.Utilisateur;
 import com.example.khedmabackend.repo.AnnonceRepo;
+import com.example.khedmabackend.repo.UtilisateurGoogleRepo;
 import com.example.khedmabackend.repo.UtilisateurRepo;
 import lombok.RequiredArgsConstructor;
 import org.json.simple.parser.ParseException;
@@ -18,6 +19,7 @@ import java.util.List;
 @RequiredArgsConstructor
 public class EmployeurService {
     private final UtilisateurRepo utilisateurRepo;
+    private final UtilisateurGoogleRepo utilisateurGoogleRepo;
     private final AnnonceRepo annonceRepo;
 
     public void addAnnonce(Annonce annonce) throws Exception {
@@ -26,7 +28,9 @@ public class EmployeurService {
 //            annonce.setDescriptionAr(ServceTraduction.traduire(annonce.getDescriptionFr()));
         annonce.setDate(Date.from(Instant.now()));
         var username= SecurityContextHolder.getContext().getAuthentication().getName();
-        Employeur employeur= (Employeur) utilisateurRepo.findByadresseMail(username).orElseThrow();
+        Employeur employeur= (Employeur) utilisateurRepo.findByadresseMail(username)
+                .or(()->utilisateurGoogleRepo.findByadresseMail(username))
+                .orElseThrow();
         annonceRepo.insert(annonce);
         employeur.getAnnonces().add(annonce);
         utilisateurRepo.save(employeur);

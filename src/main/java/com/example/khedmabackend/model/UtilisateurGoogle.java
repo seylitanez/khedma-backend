@@ -18,7 +18,7 @@ public class UtilisateurGoogle extends Utilisateur implements UserDetails {
 
     @Override
     public String getPassword() {
-        return getPassword();
+        return null;
     }
 
     @Override
