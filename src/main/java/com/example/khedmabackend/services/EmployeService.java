@@ -1,5 +1,6 @@
 package com.example.khedmabackend.services;
 import com.example.khedmabackend.model.Annonce;
+import com.example.khedmabackend.model.Employe;
 import com.example.khedmabackend.model.Utilisateur;
 import com.example.khedmabackend.repo.AnnonceRepo;
 import com.example.khedmabackend.repo.UtilisateurGoogleRepo;
@@ -35,5 +36,10 @@ public class EmployeService {
             utilisateur.setTel(tel);
         }
         return utilisateurRepo.save(utilisateur);
+    }
+
+    public List<Annonce> getFavoris(String email) {
+        Employe utilisateur =(Employe) utilisateurRepo.findByadresseMail(email).orElseThrow();
+        return utilisateur.getFavoris();
     }
 }
