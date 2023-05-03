@@ -2,6 +2,7 @@ package com.example.khedmabackend.services;
 import com.example.khedmabackend.model.Annonce;
 import com.example.khedmabackend.model.Utilisateur;
 import com.example.khedmabackend.repo.AnnonceRepo;
+import com.example.khedmabackend.repo.UtilisateurGoogleRepo;
 import com.example.khedmabackend.repo.UtilisateurRepo;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Example;
@@ -12,6 +13,7 @@ import java.util.List;
 @RequiredArgsConstructor
 public class EmployeService {
     private final UtilisateurRepo utilisateurRepo;
+    private final UtilisateurGoogleRepo utilisateurGoogleRepo;
     private final AnnonceRepo annonceRepo;
     public List<Annonce> getAnnonces(){
         return annonceRepo.findAll();
@@ -20,7 +22,9 @@ public class EmployeService {
         return annonceRepo.searchAnnonces(motCle);
     }
     public Utilisateur updateEmploye(String email, String nom, String prenom, String tel){
-        Utilisateur utilisateur =(Utilisateur) utilisateurRepo.findByadresseMail(email).orElseThrow();
+        Utilisateur utilisateur =(Utilisateur) utilisateurRepo.findByadresseMail(email)
+                .or(()->utilisateurGoogleRepo.findByadresseMail(email))
+                .orElseThrow();
         if(nom!=null && nom.length()>0 && !nom.equals(utilisateur.getNom())){
             utilisateur.setNom(nom);
         }
