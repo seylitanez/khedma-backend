@@ -1,5 +1,6 @@
 package com.example.khedmabackend.config;
 
+import com.example.khedmabackend.repo.UtilisateurGoogleRepo;
 import com.example.khedmabackend.repo.UtilisateurRepo;
 import lombok.RequiredArgsConstructor;
 import org.springframework.boot.autoconfigure.web.servlet.DispatcherServletAutoConfiguration;
@@ -23,10 +24,12 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 @RequiredArgsConstructor
 public class ApplicationConfig {
     private final UtilisateurRepo repository;
+    private final UtilisateurGoogleRepo googleRepo;
     @Bean
     //chercher un utilisateur
     public UserDetailsService userDetailsService(){
         return username -> (UserDetails) repository.findByadresseMail(username)
+                .or(()->googleRepo.findByadresseMail(username))
                 .orElseThrow(()->new UsernameNotFoundException("User not found"));
     }
     @Bean

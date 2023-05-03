@@ -8,35 +8,44 @@ import com.example.khedmabackend.model.Employe;
 import com.example.khedmabackend.model.Employeur;
 import com.example.khedmabackend.model.Moderateur;
 import com.example.khedmabackend.model.Utilisateur;
+import com.example.khedmabackend.repo.UtilisateurGoogleRepo;
 import com.example.khedmabackend.repo.UtilisateurRepo;
 import lombok.RequiredArgsConstructor;
-import org.apache.tomcat.util.http.fileupload.IOUtils;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.multipart.MultipartFile;
-
-import java.io.FileOutputStream;
-import java.io.IOException;
 
 import static com.example.khedmabackend.Utils.Constantes.*;
 @RequiredArgsConstructor
 @Service
 public class AuthentificationService {
     private final UtilisateurRepo utilisateurRepo;
+    private final UtilisateurGoogleRepo utilisateurGoogleRepo;
     private final JwtService jwtService;
     private final UserDetailsService userDetailsService;
     private final BCryptPasswordEncoder passwordEncoder;
     //cree une token pour un utilisateur qui se connect
-    public ResponseToken Authenticate(AuthentificationRequest authentificationRequest){
+    public ResponseToken authenticate(AuthentificationRequest authentificationRequest){
+        System.out.println("authenticat");
         var usernamePasswordAuthenticationToken= new UsernamePasswordAuthenticationToken(authentificationRequest.getAdresseMail(),authentificationRequest.getMotDePasse());
         Utilisateur utilisateur= utilisateurRepo.findByadresseMail(authentificationRequest.getAdresseMail()).orElseThrow();
+        System.out.println(utilisateur);
         var userDetails= userDetailsService.loadUserByUsername(authentificationRequest.getAdresseMail());
-        String token=jwtService.generateToken((UserDetails) utilisateur,utilisateur);
+        String token=jwtService.generateToken(userDetails,utilisateur);
+        System.out.println(GREEN+"token:---->:"+token);
+        return ResponseToken.builder().token(token).build();
+    }
+    public ResponseToken authenticateGoogle(AuthentificationRequest authentificationRequest){
+        System.out.println("authenticat");
+        var utilisateur= utilisateurGoogleRepo.findByadresseMail(authentificationRequest.getAdresseMail()).orElseThrow();
+//        System.out.println(utilisateur);
+
+        System.out.println("++++++++++++++++++++++"+authentificationRequest.getAdresseMail());
+        var userDetails= userDetailsService.loadUserByUsername(authentificationRequest.getAdresseMail());
+        System.out.println("-----------------"+userDetails);
+        String token=jwtService.generateToken(userDetails,utilisateur);
         System.out.println(GREEN+"token:---->:"+token);
         return ResponseToken.builder().token(token).build();
     }
@@ -91,6 +100,75 @@ public class AuthentificationService {
                 utilisateurRepo.insert(
                         utilisateur = new Moderateur(
                                 motDePasse,
+                                register.getAdresseMail(),
+                                register.getNom(),
+                                register.getPrenom(),
+                                register.getGenre(),
+                                register.getTel(),
+                                register.getAdresse(),
+                                register.getRole()
+                        ));
+            }
+        }
+        if (utilisateur==null)throw new Exception(RED+"user null");
+        String token=jwtService.generateToken((UserDetails) utilisateur,utilisateur);
+        return ResponseToken.builder().token(token).build();
+    }
+
+
+    public ResponseToken saveGoogleUser(RegisterRequest register) throws Exception {
+
+        System.out.println("save google");
+
+
+        var adresseMailExist=
+                utilisateurRepo.
+                        findByadresseMail(register.getAdresseMail())
+                        .isPresent()
+                        ||
+                        utilisateurGoogleRepo.
+                                findByadresseMail(register.getAdresseMail())
+                                .isPresent();
+
+
+        if (adresseMailExist) throw new IllegalStateException("user already exist");
+
+        Utilisateur utilisateur = null;
+        switch (register.getRole()){
+            case EMPLOYE -> {
+                System.out.println(PURPLE+"employe");
+                utilisateurGoogleRepo.insert(
+                        utilisateur=new Employe(
+                                null,
+                                register.getAdresseMail(),
+                                register.getNom(),
+                                register.getPrenom(),
+                                register.getGenre(),
+                                register.getTel(),
+                                register.getAdresse(),
+                                register.getRole()
+                        ));
+            }
+            case EMPLOYEUR -> {
+                System.out.println(PURPLE+"employeur");
+                utilisateurGoogleRepo.insert(
+                        utilisateur=new Employeur(
+                                null,
+                                register.getAdresseMail(),
+                                register.getNom(),
+                                register.getPrenom(),
+                                register.getGenre(),
+                                register.getTel(),
+                                register.getAdresse(),
+                                register.getRole(),
+                                register.getEntreprise()
+                        ));
+            }
+            case MODERATEUR -> {
+                System.out.println(PURPLE+"moderateur");
+                utilisateurGoogleRepo.insert(
+                        utilisateur = new Moderateur(
+                                null,
                                 register.getAdresseMail(),
                                 register.getNom(),
                                 register.getPrenom(),

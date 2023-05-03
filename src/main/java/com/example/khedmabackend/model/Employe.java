@@ -19,6 +19,9 @@ public class Employe extends Utilisateur implements UserDetails {
         super(motDePasse, adresseMail, nom, prenom, genre, tel, adresse, role);
         Favoris=new ArrayList<>();
     }
+
+
+
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
         return List.of(() -> EMPLOYE.name());
