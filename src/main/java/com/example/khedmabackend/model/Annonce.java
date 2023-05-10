@@ -22,4 +22,5 @@ public class Annonce {
     private Float salaireDeBase;
     private Jours[] journees=new Jours[7];
     private Date date;
+    private String adresseMail;
 }

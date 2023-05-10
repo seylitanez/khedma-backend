@@ -3,6 +3,7 @@ package com.example.khedmabackend.controller;
 
 import com.example.khedmabackend.model.Annonce;
 import com.example.khedmabackend.model.Utilisateur;
+import com.example.khedmabackend.postulation.Postulation;
 import com.example.khedmabackend.repo.UtilisateurGoogleRepo;
 import com.example.khedmabackend.services.EmployeService;
 import lombok.RequiredArgsConstructor;
@@ -33,6 +34,13 @@ public class EmployeController {
     @GetMapping("/search")
     public ResponseEntity<List<Annonce>> searchAnnonces(@RequestParam("motcle") String motCle){
         return ResponseEntity.ok().body(employeService.searchAnnonces(motCle));
+    }
+
+    @PostMapping("/postuler/{idAnnonce}")
+    public void postuler(@RequestBody Postulation postulation,@PathVariable String idAnnonce){
+
+        employeService.postuler(postulation,idAnnonce);
+
     }
     @PutMapping("/update/{email}")
     public ResponseEntity<Utilisateur> updateUser(@PathVariable("email")String email,@RequestParam(required = false) String nom,@RequestParam(required = false) String prenom,@RequestParam(required = false) String tel){

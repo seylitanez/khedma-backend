@@ -1,4 +1,6 @@
 package com.example.khedmabackend.model;
+import com.example.khedmabackend.postulation.Postulation;
+import lombok.Getter;
 import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -13,9 +15,12 @@ import static com.example.khedmabackend.model.Role.EMPLOYEUR;
 public class Employeur extends Utilisateur implements UserDetails {
     private String entreprise;
     private List<Annonce> annonces=new ArrayList<>();
+    @Getter
+    private List<Postulation> postulants;
     public Employeur(String motDePasse, String adresseMail, String nom, String prenom, Genre genre, String tel, Addresse adresse, Role role, String entreprise,boolean valide) {
         super(motDePasse, adresseMail, nom, prenom, genre, tel, adresse, role,valide);
         this.entreprise = entreprise;
+        this.postulants=new ArrayList<>();
     }
     public List<Annonce> getAnnonces() {
         return annonces;

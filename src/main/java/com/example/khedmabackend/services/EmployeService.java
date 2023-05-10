@@ -1,18 +1,14 @@
 package com.example.khedmabackend.services;
-import com.example.khedmabackend.model.Annonce;
-import com.example.khedmabackend.model.Employe;
-import com.example.khedmabackend.model.Utilisateur;
-import com.example.khedmabackend.model.UtilisateurGoogle;
+import com.example.khedmabackend.model.*;
+import com.example.khedmabackend.postulation.Postulation;
 import com.example.khedmabackend.repo.AnnonceRepo;
 import com.example.khedmabackend.repo.UtilisateurGoogleRepo;
 import com.example.khedmabackend.repo.UtilisateurRepo;
 import lombok.RequiredArgsConstructor;
-import org.springframework.data.domain.Example;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
@@ -76,4 +72,47 @@ public class EmployeService {
         return utilisateur.getFavoris();
     }
 
+    public void postuler(Postulation postulation, String idAnnonce) {
+
+        var myAdresseMail=SecurityContextHolder.getContext().getAuthentication().getName();
+
+        var me=utilisateurGoogleRepo
+                .findByadresseMail(myAdresseMail)
+                .or(()->utilisateurRepo.findByadresseMail(myAdresseMail))
+                .orElseThrow();//je cherche dans les repogoogle sinon dans le repo non google
+
+
+        //verification dans le repo des utilisateur non google
+        var isNotGoogleUser= utilisateurRepo.findUtilisateurByAnnonce(idAnnonce).isPresent();
+        if (isNotGoogleUser)
+        {
+            //creation de ma postulation
+           postulation= postulation.builder()
+                    .nom(me.getNom())
+                    .prenom(me.getPrenom())
+                    .genre(me.getGenre())
+                    .adresseMail(me.getAdresseMail()).build();
+
+            var employeur = (Employeur) utilisateurRepo.findUtilisateurByAnnonce(idAnnonce).orElseThrow();
+            System.out.println(employeur);
+            employeur.getPostulants().add(postulation);
+            utilisateurRepo.save(employeur);
+        }
+        //verification dans le repo des utilisateur google
+        var isGoogleUser=utilisateurGoogleRepo.findUtilisateurByAnnonce(idAnnonce).isPresent();
+        if (isGoogleUser)
+        {
+            //creation de ma postulation
+            postulation= postulation.builder()
+                    .nom(me.getNom())
+                    .prenom(me.getPrenom())
+                    .genre(me.getGenre())
+                    .adresseMail(me.getAdresseMail()).build();
+            var employeur = (Employeur) utilisateurGoogleRepo.findUtilisateurByAnnonce(idAnnonce).orElseThrow();
+            employeur.getPostulants().add(postulation);
+            utilisateurGoogleRepo.save(employeur);
+        }
+
+        else throw new IllegalStateException("not found");
+    }
 }

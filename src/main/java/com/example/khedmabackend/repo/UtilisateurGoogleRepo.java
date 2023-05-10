@@ -21,4 +21,7 @@ public interface UtilisateurGoogleRepo extends MongoRepository<UtilisateurGoogle
 
 
     void insert(Utilisateur utilisateur);
+
+    @Query("{'annonces._id': ObjectId(?0)}")
+    Optional<UtilisateurGoogle> findUtilisateurByAnnonce(String idAnnonce);
 }
