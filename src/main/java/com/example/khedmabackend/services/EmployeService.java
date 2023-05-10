@@ -75,4 +75,5 @@ public class EmployeService {
         Employe utilisateur =(Employe) utilisateurRepo.findByadresseMail(email).orElseThrow();
         return utilisateur.getFavoris();
     }
+
 }

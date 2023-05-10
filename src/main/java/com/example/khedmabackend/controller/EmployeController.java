@@ -42,4 +42,8 @@ public class EmployeController {
     public ResponseEntity<List<Annonce>> getFavoris(@RequestParam("email") String email){
         return ResponseEntity.ok().body(employeService.getFavoris(email));
     }
+//    @PostMapping("/postuler")
+//    public ResponseEntity<> postuler(){
+//
+//    }
 }
