@@ -61,7 +61,6 @@ public class EmployeService {
             System.out.println(employe);
         employe.getFavoris().add(annonce);
         utilisateurGoogleRepo.save(employe);
-            //TODO: corriger et continuer l'ajout aux favoris pour les compte google
         }
 
 
@@ -113,6 +112,6 @@ public class EmployeService {
             utilisateurGoogleRepo.save(employeur);
         }
 
-        else throw new IllegalStateException("not found");
+        else throw new IllegalStateException("not found");//si ca ne veut pas s'executer supprimmer cette ligne
     }
 }

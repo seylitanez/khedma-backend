@@ -1,10 +1,13 @@
 package com.example.khedmabackend.repo;
 
+import com.example.khedmabackend.model.Genre;
+import com.example.khedmabackend.model.Role;
 import com.example.khedmabackend.model.Utilisateur;
 import com.example.khedmabackend.model.UtilisateurGoogle;
 import org.springframework.data.mongodb.repository.MongoRepository;
 import org.springframework.data.mongodb.repository.Query;
 
+import java.util.List;
 import java.util.Optional;
 
 public interface UtilisateurGoogleRepo extends MongoRepository<UtilisateurGoogle,String> {
@@ -24,4 +27,9 @@ public interface UtilisateurGoogleRepo extends MongoRepository<UtilisateurGoogle
 
     @Query("{'annonces._id': ObjectId(?0)}")
     Optional<UtilisateurGoogle> findUtilisateurByAnnonce(String idAnnonce);
+
+    List<UtilisateurGoogle> findUtilisateurGoogleByrole(Role role);
+
+    List<UtilisateurGoogle> findUtilisateurGoogleBygenre(Genre genre);
+
 }
