@@ -28,8 +28,8 @@ public class ApplicationConfig {
     @Bean
     //chercher un utilisateur
     public UserDetailsService userDetailsService(){
-        return username -> (UserDetails) repository.findByadresseMail(username)
-                .or(()->googleRepo.findByadresseMail(username))
+        return username -> (UserDetails) googleRepo.findByadresseMail(username)
+                .or(()->repository.findByadresseMail(username))
                 .orElseThrow(()->new UsernameNotFoundException("User not found"));
     }
     @Bean

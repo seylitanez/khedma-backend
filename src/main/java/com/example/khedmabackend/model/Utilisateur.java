@@ -1,34 +1,64 @@
 package com.example.khedmabackend.model;
 import lombok.Data;
+import lombok.Getter;
+import lombok.Setter;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.index.Indexed;
 import org.springframework.data.mongodb.core.mapping.Document;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.userdetails.UserDetails;
+
+import java.util.Collection;
+import java.util.List;
+
 @Document
-@Data
 //table utilistaeur
-public abstract class Utilisateur {
-    @Id
-    private String id;
+public abstract class Utilisateur extends UtilisateurGoogle implements UserDetails {
+
+    @Getter
     private String motDePasse;
-    @Indexed(unique = true)
-    private String adresseMail;
-    private String nom;
-    private String prenom;
-    private Genre genre;
-    private String tel;
-    private Addresse adresse;
-    private Role role;
+
+    @Getter@Setter
     private Boolean valide;
-    public Utilisateur( String motDePasse, String adresseMail, String nom, String prenom, Genre genre, String tel, Addresse adresse,Role role) {
+
+    public Utilisateur(String motDePasse, String adresseMail, String nom, String prenom, Genre genre, String tel, Addresse adresse, Role role, Boolean valide) {
+        super(motDePasse, adresseMail, nom, prenom, genre, tel, adresse, role);
         this.motDePasse = motDePasse;
-        this.adresseMail = adresseMail;
-        this.nom = nom;
-        this.prenom = prenom;
-        this.genre = genre;
-        this.tel = tel;
-        this.adresse = adresse;
-        this.role=role;
-        this.valide=false;
+        this.valide=valide;
     }
 
+    @Override
+    public Collection<? extends GrantedAuthority> getAuthorities() {
+        return List.of(()->getRole().toString());
+    }
+
+    @Override
+    public String getPassword() {
+        return this.motDePasse;
+    }
+
+    @Override
+    public String getUsername() {
+        return getAdresseMail();
+    }
+
+    @Override
+    public boolean isAccountNonExpired() {
+        return false;
+    }
+
+    @Override
+    public boolean isAccountNonLocked() {
+        return false;
+    }
+
+    @Override
+    public boolean isCredentialsNonExpired() {
+        return false;
+    }
+
+    @Override
+    public boolean isEnabled() {
+        return false;
+    }
 }

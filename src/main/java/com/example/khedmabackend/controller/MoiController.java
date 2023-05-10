@@ -2,6 +2,7 @@ package com.example.khedmabackend.controller;
 
 
 import com.example.khedmabackend.model.Utilisateur;
+import com.example.khedmabackend.model.UtilisateurGoogle;
 import com.example.khedmabackend.services.MeService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -19,7 +20,7 @@ public class MoiController {
     private final MeService meService;
     // renvoi les information de mon profile
     @GetMapping("")
-    public Utilisateur me(){
+    public UtilisateurGoogle me(){
         return meService.me();
     }
 }

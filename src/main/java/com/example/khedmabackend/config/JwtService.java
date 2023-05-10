@@ -2,6 +2,7 @@ package com.example.khedmabackend.config;
 
 import com.example.khedmabackend.model.Role;
 import com.example.khedmabackend.model.Utilisateur;
+import com.example.khedmabackend.model.UtilisateurGoogle;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
@@ -27,10 +28,10 @@ public class JwtService {
 
         return claimsResolver.apply(claims);
     }
-    public String generateToken(UserDetails userDetails, Utilisateur utilisateur){
+    public String generateToken(UserDetails userDetails, UtilisateurGoogle utilisateur){
         return generateToken(new HashMap<>(),userDetails,utilisateur);
     }
-    public String generateToken(Map<String,Object> extraClaims, UserDetails userDetails,Utilisateur utilisateur){
+    public String generateToken(Map<String,Object> extraClaims, UserDetails userDetails,UtilisateurGoogle utilisateur){
         return Jwts.builder().setClaims(extraClaims)
                 .setSubject(userDetails.getUsername())
                 .setIssuedAt(new Date(System.currentTimeMillis()))

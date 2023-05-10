@@ -28,8 +28,8 @@ public class EmployeurService {
 //            annonce.setDescriptionAr(ServceTraduction.traduire(annonce.getDescriptionFr()));
         annonce.setDate(Date.from(Instant.now()));
         var username= SecurityContextHolder.getContext().getAuthentication().getName();
-        Employeur employeur= (Employeur) utilisateurRepo.findByadresseMail(username)
-                .or(()->utilisateurGoogleRepo.findByadresseMail(username))
+        Employeur employeur= (Employeur) utilisateurGoogleRepo.findByadresseMail(username)
+                .or(()->utilisateurRepo.findByadresseMail(username))
                 .orElseThrow();
         annonceRepo.insert(annonce);
         employeur.getAnnonces().add(annonce);

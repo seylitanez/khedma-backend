@@ -6,6 +6,7 @@ import com.example.khedmabackend.model.Utilisateur;
 import com.example.khedmabackend.repo.UtilisateurGoogleRepo;
 import com.example.khedmabackend.services.EmployeService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -20,6 +21,14 @@ public class EmployeController {
     //api de list d'annonces
     public ResponseEntity<List<Annonce>> getAnnonces(){
         return ResponseEntity.ok().body(employeService.getAnnonces());
+    }
+
+    //ajout aux favoris
+    @GetMapping("/add-favoris")
+    public HttpStatus addFavoris(@RequestParam(value = "idAnnonce")String idAnnonce){
+        employeService.addFavoris(idAnnonce);
+        System.out.println("add favoris -----");
+        return HttpStatus.CREATED;
     }
     @GetMapping("/search")
     public ResponseEntity<List<Annonce>> searchAnnonces(@RequestParam("motcle") String motCle){

@@ -15,8 +15,8 @@ import static com.example.khedmabackend.model.Role.EMPLOYE;
 //table employer
 public class Employe extends Utilisateur implements UserDetails {
     private ArrayList<Annonce> Favoris;
-    public Employe(String motDePasse, String adresseMail, String nom, String prenom, Genre genre, String tel, Addresse adresse, Role role) {
-        super(motDePasse, adresseMail, nom, prenom, genre, tel, adresse, role);
+    public Employe(String motDePasse, String adresseMail, String nom, String prenom, Genre genre, String tel, Addresse adresse, Role role,boolean valide) {
+        super(motDePasse, adresseMail, nom, prenom, genre, tel, adresse, role,valide);
         Favoris=new ArrayList<>();
     }
     @Override

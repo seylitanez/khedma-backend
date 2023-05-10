@@ -4,10 +4,7 @@ import com.example.khedmabackend.authentification.AuthentificationRequest;
 import com.example.khedmabackend.authentification.RegisterRequest;
 import com.example.khedmabackend.authentification.ResponseToken;
 import com.example.khedmabackend.config.JwtService;
-import com.example.khedmabackend.model.Employe;
-import com.example.khedmabackend.model.Employeur;
-import com.example.khedmabackend.model.Moderateur;
-import com.example.khedmabackend.model.Utilisateur;
+import com.example.khedmabackend.model.*;
 import com.example.khedmabackend.repo.UtilisateurGoogleRepo;
 import com.example.khedmabackend.repo.UtilisateurRepo;
 import lombok.RequiredArgsConstructor;
@@ -74,7 +71,8 @@ public class AuthentificationService {
                                 register.getGenre(),
                                 register.getTel(),
                                 register.getAdresse(),
-                                register.getRole()
+                                register.getRole(),
+                                false
                         ));
             }
             case EMPLOYEUR -> {
@@ -89,7 +87,8 @@ public class AuthentificationService {
                                 register.getTel(),
                                 register.getAdresse(),
                                 register.getRole(),
-                                register.getEntreprise()
+                                register.getEntreprise(),
+                                false
                         ));
             }
             case MODERATEUR -> {
@@ -103,7 +102,8 @@ public class AuthentificationService {
                                 register.getGenre(),
                                 register.getTel(),
                                 register.getAdresse(),
-                                register.getRole()
+                                register.getRole(),
+                                true
                         ));
             }
         }
@@ -130,7 +130,7 @@ public class AuthentificationService {
 
         if (adresseMailExist) throw new IllegalStateException("user already exist");
 
-        Utilisateur utilisateur = null;
+        UtilisateurGoogle utilisateur = null;
         switch (register.getRole()){
             case EMPLOYE -> {
                 System.out.println(PURPLE+"employe");
@@ -143,7 +143,8 @@ public class AuthentificationService {
                                 register.getGenre(),
                                 register.getTel(),
                                 register.getAdresse(),
-                                register.getRole()
+                                register.getRole(),
+                                true
                         ));
             }
             case EMPLOYEUR -> {
@@ -158,7 +159,8 @@ public class AuthentificationService {
                                 register.getTel(),
                                 register.getAdresse(),
                                 register.getRole(),
-                                register.getEntreprise()
+                                register.getEntreprise(),
+                                false
                         ));
             }
             case MODERATEUR -> {
@@ -172,7 +174,8 @@ public class AuthentificationService {
                                 register.getGenre(),
                                 register.getTel(),
                                 register.getAdresse(),
-                                register.getRole()
+                                register.getRole(),
+                                true
                         ));
             }
         }

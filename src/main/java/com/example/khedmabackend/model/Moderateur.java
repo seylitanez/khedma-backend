@@ -9,8 +9,10 @@ import static com.example.khedmabackend.model.Role.MODERATEUR;
 //table moderateur
 public class Moderateur extends Utilisateur implements  UserDetails {
 
-    public Moderateur(String motDePasse, String adresseMail, String nom, String prenom, Genre genre, String tel, Addresse adresse, Role role) {
-        super(motDePasse, adresseMail, nom, prenom, genre, tel, adresse, role);
+    private boolean valide;
+
+    public Moderateur(String motDePasse, String adresseMail, String nom, String prenom, Genre genre, String tel, Addresse adresse, Role role,boolean valide) {
+        super(motDePasse, adresseMail, nom, prenom, genre, tel, adresse, role,valide);
     }
 
     @Override
