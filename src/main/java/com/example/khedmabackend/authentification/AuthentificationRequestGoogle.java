@@ -4,5 +4,8 @@ import lombok.Data;
 
 @Data
 public class AuthentificationRequestGoogle {
-    private String token;
+    private GoogleObjectInformations googleUserObj;
+    private Long exp;
+
+
 }

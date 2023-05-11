@@ -13,11 +13,16 @@ import com.example.khedmabackend.services.ServiceConfirmation;
 import com.example.khedmabackend.services.ServiceEnregistrementFichier;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.oauth2.client.OAuth2AuthorizedClient;
+import org.springframework.security.oauth2.client.annotation.RegisteredOAuth2AuthorizedClient;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
+import java.io.InvalidObjectException;
 import java.security.InvalidKeyException;
+import java.security.NoSuchAlgorithmException;
+import java.security.spec.InvalidKeySpecException;
 import java.util.List;
 
 @RestController
@@ -61,6 +66,20 @@ public class AuthenticationController {
 //        System.out.println(modelAndView.getModel());
 //        return modelAndView;
 //    }
+
+
+    @PostMapping("/test")
+    public String getUserInfo(@RequestBody OAuth2AuthorizedClient authorizedClient) {
+        System.out.println(authorizedClient);
+
+        System.out.println("-----------------------------------------------------------------------------------");
+        String accessToken = authorizedClient.getAccessToken().getTokenValue();
+        // Récupérer d'autres informations de l'utilisateur selon vos besoins
+        System.out.println(accessToken);
+
+        return accessToken;
+    }
+
     @GetMapping("/confirm")
     public void confirm(@RequestParam(value = "token") String token) throws InvalidKeyException {
         serviceConfirmation.confirm(token);
@@ -73,7 +92,7 @@ public class AuthenticationController {
     }
     @PostMapping("/Google-login")
     //rest api de conction d'un utilisateur
-    public ResponseEntity<ResponseToken> googlelogin(@RequestBody AuthentificationRequestGoogle authentificationRequestGoogle) throws IllegalAccessException {
+    public ResponseEntity<ResponseToken> googlelogin(@RequestBody AuthentificationRequestGoogle authentificationRequestGoogle) throws Exception {
         System.out.println(authentificationRequestGoogle);
         ResponseToken token= authentificationService.authenticateGoogle(authentificationRequestGoogle);
         return ResponseEntity.ok().body(token);

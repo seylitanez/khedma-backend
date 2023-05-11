@@ -13,6 +13,8 @@ import org.springframework.security.web.authentication.WebAuthenticationDetailsS
 import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
 import static com.example.khedmabackend.Utils.Constantes.*;
+
+import java.io.BufferedReader;
 import java.io.IOException;
 
 @Component
@@ -25,6 +27,7 @@ public class JwtAuthenticationFiIter extends OncePerRequestFilter {
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
         final String authHeder=request.getHeader("Authorization"),jwt,userEmail;
         System.out.println(BLUE+"authHeder = " + authHeder);
+//        System.out.println(BLUE+"authHeder = " + getRequestBody(request));
         System.out.println(CYAN+request.getRequestURI()+RED);
         if (authHeder==null||!authHeder.startsWith("Bearer ")){
             filterChain.doFilter(request,response);
@@ -45,4 +48,16 @@ public class JwtAuthenticationFiIter extends OncePerRequestFilter {
         }
         filterChain.doFilter(request,response);
     }
+
+//    private String getRequestBody(HttpServletRequest request) throws IOException {
+//        StringBuilder sb = new StringBuilder();
+//        BufferedReader reader = request.getReader();
+//        String line;
+//
+//        while ((line = reader.readLine()) != null) {
+//            sb.append(line);
+//        }
+//
+//        return sb.toString();
+//    }
 }

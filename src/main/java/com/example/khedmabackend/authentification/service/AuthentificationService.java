@@ -1,20 +1,23 @@
 package com.example.khedmabackend.authentification.service;
 
-import com.example.khedmabackend.authentification.AuthentificationRequest;
-import com.example.khedmabackend.authentification.AuthentificationRequestGoogle;
-import com.example.khedmabackend.authentification.RegisterRequest;
-import com.example.khedmabackend.authentification.ResponseToken;
+import com.example.khedmabackend.authentification.*;
 import com.example.khedmabackend.config.JwtService;
-import com.example.khedmabackend.config.JwtServiceGoogle;
 import com.example.khedmabackend.model.*;
 import com.example.khedmabackend.repo.UtilisateurGoogleRepo;
 import com.example.khedmabackend.repo.UtilisateurRepo;
+import io.jsonwebtoken.ExpiredJwtException;
+import lombok.Data;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
+
+import java.io.InvalidObjectException;
+import java.security.NoSuchAlgorithmException;
+import java.security.spec.InvalidKeySpecException;
+import java.util.Date;
 
 import static com.example.khedmabackend.Utils.Constantes.*;
 @RequiredArgsConstructor
@@ -23,7 +26,7 @@ public class AuthentificationService {
     private final UtilisateurRepo utilisateurRepo;
     private final UtilisateurGoogleRepo utilisateurGoogleRepo;
     private final JwtService jwtService;
-    private final JwtServiceGoogle jwtServiceGoogle;
+//    private final JwtServiceGoogle jwtServiceGoogle;
     private final UserDetailsService userDetailsService;
     private final BCryptPasswordEncoder passwordEncoder;
     //cree une token pour un utilisateur qui se connect
@@ -37,14 +40,18 @@ public class AuthentificationService {
         System.out.println(GREEN+"token:---->:"+token);
         return ResponseToken.builder().token(token).build();
     }
-    public ResponseToken authenticateGoogle(AuthentificationRequestGoogle authentificationRequestGoogle) throws IllegalAccessException {
+    public ResponseToken authenticateGoogle(AuthentificationRequestGoogle authentificationRequestGoogle) throws Exception {
 
-        //on doit verifier que c'est un utilisateur google avec un attrib cache dans le token
-        var isGoogleUser=
-                jwtServiceGoogle.extractIsGoogleUser(authentificationRequestGoogle.getToken());
-        if (!isGoogleUser)throw new IllegalAccessException("NON GOOGLE USER");
+        var googleUserObj=authentificationRequestGoogle.getGoogleUserObj();
 
-        var email= jwtServiceGoogle.extractUsername(authentificationRequestGoogle.getToken());
+        Long expiration=authentificationRequestGoogle.getExp();
+
+        var isExpired= new Date(expiration).before(new Date());
+
+        if (isExpired) throw new Exception("token expired");
+
+
+        var email= googleUserObj.getEmail();
 
         var utilisateur= utilisateurGoogleRepo.findByadresseMail(email).orElseThrow();
 
