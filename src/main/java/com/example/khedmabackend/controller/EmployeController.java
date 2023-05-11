@@ -9,6 +9,7 @@ import com.example.khedmabackend.services.EmployeService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -48,10 +49,16 @@ public class EmployeController {
     }
     @GetMapping("/favoris")
     public ResponseEntity<List<Annonce>> getFavoris(@RequestParam("email") String email){
+
         return ResponseEntity.ok().body(employeService.getFavoris(email));
     }
-//    @PostMapping("/postuler")
-//    public ResponseEntity<> postuler(){
-//
-//    }
+
+
+    //suprression des annonce favoris
+    @DeleteMapping("/delete-favoris/{idAnnonce}")
+    public String deleteFavoris(@PathVariable String idAnnonce){
+        employeService.deleteFavoris(idAnnonce);
+        return "deleted successfully";
+    }
+
 }

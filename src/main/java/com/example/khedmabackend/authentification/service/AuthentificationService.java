@@ -27,8 +27,8 @@ public class AuthentificationService {
     public ResponseToken authenticate(AuthentificationRequest authentificationRequest){
         System.out.println("authenticat");
         var usernamePasswordAuthenticationToken= new UsernamePasswordAuthenticationToken(authentificationRequest.getAdresseMail(),authentificationRequest.getMotDePasse());
+        System.out.println(authentificationRequest.getAdresseMail());
         Utilisateur utilisateur= utilisateurRepo.findByadresseMail(authentificationRequest.getAdresseMail()).orElseThrow();
-        System.out.println(utilisateur);
         var userDetails= userDetailsService.loadUserByUsername(authentificationRequest.getAdresseMail());
         String token=jwtService.generateToken(userDetails,utilisateur);
         System.out.println(GREEN+"token:---->:"+token);

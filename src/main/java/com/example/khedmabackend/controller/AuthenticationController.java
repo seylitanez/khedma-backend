@@ -32,7 +32,7 @@ public class AuthenticationController {
     //rest api ajout d'un utilisateur
     public ResponseEntity<ResponseToken> addUser(@RequestBody RegisterRequest register) throws Exception {
         ResponseToken token=authentificationService.save(register);
-        emailService.sendMail(register.getAdresseMail(), register.getPrenom(),token.getToken());
+//        emailService.sendMail(register.getAdresseMail(), register.getPrenom(),token.getToken());
         return ResponseEntity.status(201).body(token);
     }
     @PostMapping("/add-GoogleUser")

@@ -67,7 +67,9 @@ public class EmployeService {
 
     }
     public List<Annonce> getFavoris(String email) {
-        Employe utilisateur =(Employe) utilisateurRepo.findByadresseMail(email).orElseThrow();
+        Employe utilisateur =(Employe) utilisateurGoogleRepo.findByadresseMail(email)
+                .or(()->utilisateurRepo.findByadresseMail(email))
+                .orElseThrow();
         return utilisateur.getFavoris();
     }
 
@@ -113,5 +115,34 @@ public class EmployeService {
         }
 
         else throw new IllegalStateException("not found");//si ca ne veut pas s'executer supprimmer cette ligne
+    }
+
+    public void deleteFavoris(String idAnnonce) {
+        var myAdresseMail=SecurityContextHolder.getContext().getAuthentication().getName();
+
+        var me=utilisateurGoogleRepo
+                .findByadresseMail(myAdresseMail)
+                .or(()->utilisateurRepo.findByadresseMail(myAdresseMail))
+                .orElseThrow();//je cherche dans les repogoogle sinon dans le repo non google
+
+        var annonce=annonceRepo.findById(idAnnonce).orElseThrow();
+
+        ((Employe)me).getFavoris().remove(annonce);
+
+        System.out.println(((Employe)me).getFavoris());
+
+        var isNotGoogleUser= utilisateurRepo.findByadresseMail(myAdresseMail).isPresent();
+        var isGoogleUser=utilisateurGoogleRepo.findByadresseMail(myAdresseMail).isPresent();
+
+        if (isGoogleUser){
+            System.out.println("je suis un utilisateur google");
+            utilisateurGoogleRepo.save(me);
+        }
+        if (isNotGoogleUser){
+            System.out.println("je suis pas un utilisateur google");
+            utilisateurRepo.save((Employe)me);
+        }
+
+
     }
 }
