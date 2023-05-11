@@ -1,5 +1,6 @@
 package com.example.khedmabackend.controller;
 import com.example.khedmabackend.authentification.AuthentificationRequest;
+import com.example.khedmabackend.authentification.AuthentificationRequestGoogle;
 import com.example.khedmabackend.authentification.RegisterRequest;
 import com.example.khedmabackend.authentification.ResponseToken;
 import com.example.khedmabackend.authentification.service.AuthentificationService;
@@ -72,8 +73,9 @@ public class AuthenticationController {
     }
     @PostMapping("/Google-login")
     //rest api de conction d'un utilisateur
-    public ResponseEntity<ResponseToken> googlelogin(@RequestBody AuthentificationRequest authentificationRequest){
-        ResponseToken token= authentificationService.authenticateGoogle(authentificationRequest);
+    public ResponseEntity<ResponseToken> googlelogin(@RequestBody AuthentificationRequestGoogle authentificationRequestGoogle) throws IllegalAccessException {
+        System.out.println(authentificationRequestGoogle);
+        ResponseToken token= authentificationService.authenticateGoogle(authentificationRequestGoogle);
         return ResponseEntity.ok().body(token);
     }
 }

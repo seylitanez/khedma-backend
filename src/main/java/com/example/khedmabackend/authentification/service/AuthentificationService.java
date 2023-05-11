@@ -1,9 +1,11 @@
 package com.example.khedmabackend.authentification.service;
 
 import com.example.khedmabackend.authentification.AuthentificationRequest;
+import com.example.khedmabackend.authentification.AuthentificationRequestGoogle;
 import com.example.khedmabackend.authentification.RegisterRequest;
 import com.example.khedmabackend.authentification.ResponseToken;
 import com.example.khedmabackend.config.JwtService;
+import com.example.khedmabackend.config.JwtServiceGoogle;
 import com.example.khedmabackend.model.*;
 import com.example.khedmabackend.repo.UtilisateurGoogleRepo;
 import com.example.khedmabackend.repo.UtilisateurRepo;
@@ -21,6 +23,7 @@ public class AuthentificationService {
     private final UtilisateurRepo utilisateurRepo;
     private final UtilisateurGoogleRepo utilisateurGoogleRepo;
     private final JwtService jwtService;
+    private final JwtServiceGoogle jwtServiceGoogle;
     private final UserDetailsService userDetailsService;
     private final BCryptPasswordEncoder passwordEncoder;
     //cree une token pour un utilisateur qui se connect
@@ -34,13 +37,18 @@ public class AuthentificationService {
         System.out.println(GREEN+"token:---->:"+token);
         return ResponseToken.builder().token(token).build();
     }
-    public ResponseToken authenticateGoogle(AuthentificationRequest authentificationRequest){
-        System.out.println("authenticat");
-        var utilisateur= utilisateurGoogleRepo.findByadresseMail(authentificationRequest.getAdresseMail()).orElseThrow();
-//        System.out.println(utilisateur);
+    public ResponseToken authenticateGoogle(AuthentificationRequestGoogle authentificationRequestGoogle) throws IllegalAccessException {
 
-        System.out.println("++++++++++++++++++++++"+authentificationRequest.getAdresseMail());
-        var userDetails= userDetailsService.loadUserByUsername(authentificationRequest.getAdresseMail());
+        //on doit verifier que c'est un utilisateur google avec un attrib cache dans le token
+        var isGoogleUser=
+                jwtServiceGoogle.extractIsGoogleUser(authentificationRequestGoogle.getToken());
+        if (!isGoogleUser)throw new IllegalAccessException("NON GOOGLE USER");
+
+        var email= jwtServiceGoogle.extractUsername(authentificationRequestGoogle.getToken());
+
+        var utilisateur= utilisateurGoogleRepo.findByadresseMail(email).orElseThrow();
+
+        var userDetails= userDetailsService.loadUserByUsername(email);
         System.out.println("-----------------"+userDetails);
         String token=jwtService.generateToken(userDetails,utilisateur);
         System.out.println(GREEN+"token:---->:"+token);
@@ -116,6 +124,8 @@ public class AuthentificationService {
     public ResponseToken saveGoogleUser(RegisterRequest register) throws Exception {
 
         System.out.println("save google");
+
+
 
 
         var adresseMailExist=
