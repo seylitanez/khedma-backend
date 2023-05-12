@@ -154,7 +154,7 @@ public class AuthentificationService {
                                 register.getTel(),
                                 register.getAdresse(),
                                 register.getRole(),
-                                true
+                                true//on valide son compte car on a pas besoin de la verification par mail vu que c'est un google user
                         ));
             }
             case EMPLOYEUR -> {

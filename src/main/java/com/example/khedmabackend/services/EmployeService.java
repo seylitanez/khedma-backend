@@ -50,15 +50,13 @@ public class EmployeService {
                 .orElseThrow();
         employe.getFavoris().add(annonce);
         utilisateurRepo.save(employe);
-        employe.getFavoris().add(annonce);
-        utilisateurRepo.save(employe);
         }
         var isGoogleUtilisateur= utilisateurGoogleRepo.findByadresseMail(myEmail).isPresent();
         System.out.println("l'email avant le if"+myEmail);
         if (isGoogleUtilisateur){
 
          var employe=(Employe) utilisateurGoogleRepo.findByEmail(myEmail);
-            System.out.println(employe);
+
         employe.getFavoris().add(annonce);
         utilisateurGoogleRepo.save(employe);
         }
@@ -84,8 +82,8 @@ public class EmployeService {
 
 
         //verification dans le repo des utilisateur non google
-        var isNotGoogleUser= utilisateurRepo.findUtilisateurByAnnonce(idAnnonce).isPresent();
-        if (isNotGoogleUser)
+        var nonGoogleUserExist= utilisateurRepo.findUtilisateurByAnnonce(idAnnonce).isPresent();
+        if (nonGoogleUserExist)
         {
             //creation de ma postulation
            postulation= postulation.builder()
@@ -100,8 +98,8 @@ public class EmployeService {
             utilisateurRepo.save(employeur);
         }
         //verification dans le repo des utilisateur google
-        var isGoogleUser=utilisateurGoogleRepo.findUtilisateurByAnnonce(idAnnonce).isPresent();
-        if (isGoogleUser)
+        var googleUserExist=utilisateurGoogleRepo.findUtilisateurByAnnonce(idAnnonce).isPresent();
+        if (googleUserExist)
         {
             //creation de ma postulation
             postulation= postulation.builder()
