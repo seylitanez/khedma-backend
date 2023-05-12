@@ -42,23 +42,16 @@ public class AuthentificationService {
     }
     public ResponseToken authenticateGoogle(AuthentificationRequestGoogle authentificationRequestGoogle) throws Exception {
 
-        var googleUserObj=authentificationRequestGoogle.getGoogleUserObj();
+        var googleToken=authentificationRequestGoogle.getToken();//je recupere le token que ma genere le frontend
 
-        Long expiration=authentificationRequestGoogle.getExp();
+        var email=jwtService.extractEmail(googleToken);
 
-        var isExpired= new Date(expiration).before(new Date());
-
-        if (isExpired) throw new Exception("token expired");
-
-
-        var email= googleUserObj.getEmail();
-
-        var utilisateur= utilisateurGoogleRepo.findByadresseMail(email).orElseThrow();
+        var utilisateur=utilisateurGoogleRepo.findByEmail(email);
 
         var userDetails= userDetailsService.loadUserByUsername(email);
-        System.out.println("-----------------"+userDetails);
+
         String token=jwtService.generateToken(userDetails,utilisateur);
-        System.out.println(GREEN+"token:---->:"+token);
+
         return ResponseToken.builder().token(token).build();
     }
     //sauvgarder un nouveux utilisateur et cree son token de conection

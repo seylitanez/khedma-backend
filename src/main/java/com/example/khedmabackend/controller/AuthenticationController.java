@@ -4,25 +4,18 @@ import com.example.khedmabackend.authentification.AuthentificationRequestGoogle;
 import com.example.khedmabackend.authentification.RegisterRequest;
 import com.example.khedmabackend.authentification.ResponseToken;
 import com.example.khedmabackend.authentification.service.AuthentificationService;
+import com.example.khedmabackend.config.JwtService;
 import com.example.khedmabackend.model.Utilisateur;
 import com.example.khedmabackend.model.UtilisateurGoogle;
 import com.example.khedmabackend.repo.UtilisateurGoogleRepo;
 import com.example.khedmabackend.repo.UtilisateurRepo;
 import com.example.khedmabackend.services.EmailService;
 import com.example.khedmabackend.services.ServiceConfirmation;
-import com.example.khedmabackend.services.ServiceEnregistrementFichier;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.oauth2.client.OAuth2AuthorizedClient;
-import org.springframework.security.oauth2.client.annotation.RegisteredOAuth2AuthorizedClient;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.multipart.MultipartFile;
 
-import java.io.IOException;
-import java.io.InvalidObjectException;
 import java.security.InvalidKeyException;
-import java.security.NoSuchAlgorithmException;
-import java.security.spec.InvalidKeySpecException;
 import java.util.List;
 
 @RestController
@@ -34,6 +27,8 @@ public class AuthenticationController {
     private final EmailService emailService;
     private final UtilisateurGoogleRepo utilisateurGoogleRepo;
     private final UtilisateurRepo utilisateurRepo;
+
+    private final JwtService jwtService;
     @PostMapping("/add-user")
     //rest api ajout d'un utilisateur
     public ResponseEntity<ResponseToken> addUser(@RequestBody RegisterRequest register) throws Exception {
@@ -68,17 +63,23 @@ public class AuthenticationController {
 //    }
 
 
-    @PostMapping("/test")
-    public String getUserInfo(@RequestBody OAuth2AuthorizedClient authorizedClient) {
-        System.out.println(authorizedClient);
-
-        System.out.println("-----------------------------------------------------------------------------------");
-        String accessToken = authorizedClient.getAccessToken().getTokenValue();
-        // Récupérer d'autres informations de l'utilisateur selon vos besoins
-        System.out.println(accessToken);
-
-        return accessToken;
-    }
+//    @PostMapping("/test")
+//    public String getUserInfo(@RequestBody Test test) throws Exception {
+//        System.out.println(test);
+//        System.out.println("-*/-*-*-/-*-*/*/test");
+//        System.out.println();
+//        var email=jwtService.extractTest(test.getToken());
+//
+//        System.out.println("l'utilisateur "+ utilisateurGoogleRepo.findByadresseMail(email).orElseThrow());
+//
+//        if (!jwtService.isTokenValid(test.getToken()))throw new Exception("non valide");
+//        System.out.println(jwtService.extractUsername(test.getToken()));
+//
+//
+//
+//
+//        return "test";
+//    }
 
     @GetMapping("/confirm")
     public void confirm(@RequestParam(value = "token") String token) throws InvalidKeyException {
