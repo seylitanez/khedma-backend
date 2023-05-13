@@ -9,6 +9,7 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
 import java.io.File;
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -87,6 +88,7 @@ public class EmployeService {
 
 
 
+            Annonce annonce= annonceRepo.findAnnonceByid(idAnnonce).orElseThrow();
         //verification dans le repo des utilisateur non google
         var nonGoogleUserExist= utilisateurRepo.findUtilisateurByAnnonce(idAnnonce).isPresent();
         if (nonGoogleUserExist)
@@ -102,9 +104,16 @@ public class EmployeService {
                    .build();
 
             var employeur = (Employeur) utilisateurRepo.findUtilisateurByAnnonce(idAnnonce).orElseThrow();
+            annonce.getPostulants().add(postulation);
+            for (Annonce n:employeur.getAnnonces()) {
+                if (n.getId().equals(idAnnonce))
+                    n.getPostulants().add(postulation);
+            }
+//            employeur.getAnnonces().get(employeur.getAnnonces().indexOf(annonce)).getPostulants().add(postulation);
             System.out.println(employeur);
             employeur.getPostulants().add(postulation);
             utilisateurRepo.save(employeur);
+            annonceRepo.save(annonce);
         }
         //verification dans le repo des utilisateur google
         var googleUserExist=utilisateurGoogleRepo.findUtilisateurByAnnonce(idAnnonce).isPresent();
@@ -119,8 +128,15 @@ public class EmployeService {
                     .cv(monCv)
                     .build();
             var employeur = (Employeur) utilisateurGoogleRepo.findUtilisateurByAnnonce(idAnnonce).orElseThrow();
+            annonce.getPostulants().add(postulation);
+            for (Annonce n:employeur.getAnnonces()) {
+                if (n.getId().equals(idAnnonce))
+                    n.getPostulants().add(postulation);
+            }
+//            employeur.getAnnonces().get(employeur.getAnnonces().indexOf(annonce)).getPostulants().add(postulation);
             employeur.getPostulants().add(postulation);
             utilisateurGoogleRepo.save(employeur);
+            annonceRepo.save(annonce);
         }
 
         //si ca ne veut pas s'executer supprimmer cette ligne
@@ -153,5 +169,11 @@ public class EmployeService {
         }
 
 
+    }
+
+    public ArrayList<Annonce> getPostulations() {
+        var myAdresseMail=SecurityContextHolder.getContext().getAuthentication().getName();
+        ArrayList<Annonce> postulations= (ArrayList<Annonce>) annonceRepo.findAnnonceByPostulant(myAdresseMail);
+        return postulations;
     }
 }

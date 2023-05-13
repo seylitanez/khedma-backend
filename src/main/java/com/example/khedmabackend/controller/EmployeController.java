@@ -61,7 +61,11 @@ public class EmployeController {
         return ResponseEntity.ok().body(employeService.getFavoris(email));
     }
 
-
+    //recuperes les annonces postulés
+    @GetMapping("/postulations")
+    public ResponseEntity<List<Annonce>> getPostulations(){
+        return ResponseEntity.ok().body(employeService.getPostulations());
+    }
     //suprression des annonce favoris
     @DeleteMapping("/delete-favoris/{idAnnonce}")
     public ResponseEntity<?> deleteFavoris(@PathVariable String idAnnonce){
