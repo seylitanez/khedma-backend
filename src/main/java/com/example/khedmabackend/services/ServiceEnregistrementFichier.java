@@ -24,10 +24,9 @@ public class ServiceEnregistrementFichier {
         var myAccount =utilisateurRepo.findByadresseMail(me).orElseThrow();
         var myId= myAccount.getId();
 
-        File myRepo=new File("images/"+myId);
-        myRepo.mkdir();//creation de mon repo
 
-        IOUtils.copy(file.getInputStream(),new FileOutputStream("images/"+myRepo.getName()+"/"+file.getOriginalFilename()));
+
+        IOUtils.copy(file.getInputStream(),new FileOutputStream("images/"+myId+"/"+file.getOriginalFilename()));
 
 
 

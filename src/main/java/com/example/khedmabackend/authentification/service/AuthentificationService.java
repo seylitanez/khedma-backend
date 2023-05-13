@@ -17,6 +17,7 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import java.io.File;
 import java.io.InvalidObjectException;
 import java.security.NoSuchAlgorithmException;
 import java.security.Principal;
@@ -38,9 +39,9 @@ public class AuthentificationService {
     //cree une token pour un utilisateur qui se connect
     public ResponseToken authenticate(AuthentificationRequest authentificationRequest) {
         try {
+            System.out.println(authentificationRequest.getAdresseMail());
             var usernamePasswordAuthenticationToken = new UsernamePasswordAuthenticationToken(authentificationRequest.getAdresseMail(), authentificationRequest.getMotDePasse());
             authenticationManager.authenticate(usernamePasswordAuthenticationToken);
-            System.out.println(authentificationRequest.getAdresseMail());
             Utilisateur utilisateur = utilisateurRepo.findByadresseMail(authentificationRequest.getAdresseMail()).orElseThrow();
             var userDetails = userDetailsService.loadUserByUsername(authentificationRequest.getAdresseMail());
             String token = jwtService.generateToken(userDetails, utilisateur);
@@ -73,6 +74,7 @@ public class AuthentificationService {
     public ResponseToken save(RegisterRequest register) throws Exception {
 //        IOUtils.copy(file.getInputStream(),new FileOutputStream("cv.png"));
         System.out.println("save");
+
         var motDePasse= PasswordEncoder.encode(register.getMotDePasse());
         var adresseMailExist=
                 utilisateurRepo.
@@ -132,6 +134,11 @@ public class AuthentificationService {
         }
 
         if (utilisateur==null)throw new Exception(RED+"user null");
+
+        File myRepo=new File("images/"+utilisateur.getId());
+        myRepo.mkdir();//creation de mon repo
+
+
         String token=jwtService.generateToken((UserDetails) utilisateur,utilisateur);
         return ResponseToken.builder().token(token).build();
     }
@@ -205,6 +212,9 @@ public class AuthentificationService {
             }
         }
         if (utilisateur==null)throw new Exception(RED+"user null");
+
+        File myRepo=new File("images/"+utilisateur.getId());
+        myRepo.mkdir();//creation de mon repo
         String token=jwtService.generateToken((UserDetails) utilisateur,utilisateur);
         return ResponseToken.builder().token(token).build();
     }
