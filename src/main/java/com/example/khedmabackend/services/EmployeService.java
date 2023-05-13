@@ -8,6 +8,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
+import java.io.File;
 import java.util.List;
 
 @Service
@@ -71,14 +72,18 @@ public class EmployeService {
         return utilisateur.getFavoris();
     }
 
-    public void postuler(Postulation postulation, String idAnnonce) {
+    public void postuler(String idAnnonce) {
 
         var myAdresseMail=SecurityContextHolder.getContext().getAuthentication().getName();
+
 
         var me=utilisateurGoogleRepo
                 .findByadresseMail(myAdresseMail)
                 .or(()->utilisateurRepo.findByadresseMail(myAdresseMail))
                 .orElseThrow();//je cherche dans les repogoogle sinon dans le repo non google
+
+        File myRepo=new File("images/"+me.getId());
+        var monCv= myRepo.getAbsoluteFile().listFiles()[0].getName();//je recupere le nom de mon fichier
 
 
 
@@ -87,11 +92,14 @@ public class EmployeService {
         if (nonGoogleUserExist)
         {
             //creation de ma postulation
-           postulation= postulation.builder()
+
+           var postulation= Postulation.builder()
                     .nom(me.getNom())
                     .prenom(me.getPrenom())
                     .genre(me.getGenre())
-                    .adresseMail(me.getAdresseMail()).build();
+                    .adresseMail(me.getAdresseMail())
+                    .cv(monCv)
+                   .build();
 
             var employeur = (Employeur) utilisateurRepo.findUtilisateurByAnnonce(idAnnonce).orElseThrow();
             System.out.println(employeur);
@@ -103,17 +111,19 @@ public class EmployeService {
         if (googleUserExist)
         {
             //creation de ma postulation
-            postulation= postulation.builder()
+            var postulation= Postulation.builder()
                     .nom(me.getNom())
                     .prenom(me.getPrenom())
                     .genre(me.getGenre())
-                    .adresseMail(me.getAdresseMail()).build();
+                    .adresseMail(me.getAdresseMail())
+                    .cv(monCv)
+                    .build();
             var employeur = (Employeur) utilisateurGoogleRepo.findUtilisateurByAnnonce(idAnnonce).orElseThrow();
             employeur.getPostulants().add(postulation);
             utilisateurGoogleRepo.save(employeur);
         }
 
-        else throw new IllegalStateException("not found");//si ca ne veut pas s'executer supprimmer cette ligne
+        //si ca ne veut pas s'executer supprimmer cette ligne
     }
 
     public void deleteFavoris(String idAnnonce) {

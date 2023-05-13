@@ -37,15 +37,13 @@ public class EmployeController {
         return ResponseEntity.ok().body(employeService.searchAnnonces(motCle));
     }
 
-    @PostMapping("/postuler/{idAnnonce}")
-    public ResponseEntity<?> postuler(@RequestBody Postulation postulation,@PathVariable String idAnnonce){
+    @GetMapping("/postuler/{idAnnonce}")
+    public ResponseEntity<?> postuler(@PathVariable String idAnnonce){
 
         System.out.println("postuler");
-        System.out.println(postulation);
         try {
             System.out.println("postuler");
-            System.out.println(postulation);
-            employeService.postuler(postulation,idAnnonce);
+            employeService.postuler(idAnnonce);
             return ResponseEntity.ok().body("success");
         } catch (Exception e) {
             return ResponseEntity.badRequest().body(e.getMessage());

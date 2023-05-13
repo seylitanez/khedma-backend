@@ -16,5 +16,6 @@ public class Postulation {
     private Genre genre;
     private String tel;
     private Addresse adresse;
+    private String cv;
 
 }
