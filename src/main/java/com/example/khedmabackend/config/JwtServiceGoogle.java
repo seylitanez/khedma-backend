@@ -39,6 +39,7 @@ public class JwtServiceGoogle {
                 .setIssuedAt(new Date(System.currentTimeMillis()))
                 .claim("role",utilisateur.getRole())
                 .claim("isGoogleUser",utilisateur.getNom()+"_"+utilisateur.getPrenom())
+                .claim("valid",true)
                 .setExpiration(new Date(System.currentTimeMillis()+1000*60*60*24))
                 .signWith(getSignInKey(), SignatureAlgorithm.HS256)
                 .compact();

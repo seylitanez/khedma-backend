@@ -32,6 +32,8 @@ public class SecurityConfiguration {
                 .authorizeHttpRequests().requestMatchers("/api/v1/search/**").permitAll()
                 .and()
                 .authorizeHttpRequests().requestMatchers("/images/**").permitAll()
+                .and()
+                .authorizeHttpRequests().requestMatchers("/api/v1/document/**").hasAnyAuthority(EMPLOYE,EMPLOYEUR)
 //                .and()
 //                .authorizeHttpRequests().requestMatchers("/api/v1/me").permitAll()
                 .anyRequest().authenticated()

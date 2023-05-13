@@ -21,7 +21,6 @@ public class Moderateur extends Utilisateur implements  UserDetails {
     }
     @Override
     public String getPassword() {
-        System.out.println("le mot de passe:"+getMotDePasse());
         return this.getMotDePasse();
     }
     @Override

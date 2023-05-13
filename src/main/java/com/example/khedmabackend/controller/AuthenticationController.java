@@ -75,8 +75,6 @@ public class AuthenticationController {
         }
     }
 
-
-
     @GetMapping("/confirm")
     public void confirm(@RequestParam(value = "token") String token) throws InvalidKeyException {
         serviceConfirmation.confirm(token);
@@ -101,4 +99,10 @@ public class AuthenticationController {
             return ResponseEntity.status(401).body("l'utilisateur n'existe pas");
         }
     }
+    //mot de passe oublié
+//    @PostMapping("/forgot-password")
+//    public ResponseEntity<String> forgotPassword(@RequestBody AuthentificationRequest authentificationRequest) throws Exception {
+//        authentificationService.forgotPassword(authentificationRequest);
+//        return ResponseEntity.ok().body("email envoyé");
+//    }
 }

@@ -18,7 +18,7 @@ public abstract class Utilisateur extends UtilisateurGoogle implements UserDetai
     @Getter
     private String motDePasse;
 
-    @Getter@Setter
+    @Getter @Setter
     private Boolean valide;
 
     public Utilisateur(String motDePasse, String adresseMail, String nom, String prenom, Genre genre, String tel, Addresse adresse, Role role, Boolean valide) {

@@ -38,11 +38,8 @@ public class AuthentificationService {
     //cree une token pour un utilisateur qui se connect
     public ResponseToken authenticate(AuthentificationRequest authentificationRequest) {
         try {
-
-
             var usernamePasswordAuthenticationToken = new UsernamePasswordAuthenticationToken(authentificationRequest.getAdresseMail(), authentificationRequest.getMotDePasse());
             authenticationManager.authenticate(usernamePasswordAuthenticationToken);
-
             System.out.println(authentificationRequest.getAdresseMail());
             Utilisateur utilisateur = utilisateurRepo.findByadresseMail(authentificationRequest.getAdresseMail()).orElseThrow();
             var userDetails = userDetailsService.loadUserByUsername(authentificationRequest.getAdresseMail());
