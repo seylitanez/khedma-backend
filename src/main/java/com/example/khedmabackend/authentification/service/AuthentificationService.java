@@ -8,7 +8,10 @@ import com.example.khedmabackend.repo.UtilisateurRepo;
 import io.jsonwebtoken.ExpiredJwtException;
 import lombok.Data;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.AuthenticationException;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -16,6 +19,7 @@ import org.springframework.stereotype.Service;
 
 import java.io.InvalidObjectException;
 import java.security.NoSuchAlgorithmException;
+import java.security.Principal;
 import java.security.spec.InvalidKeySpecException;
 import java.util.Date;
 
@@ -28,17 +32,26 @@ public class AuthentificationService {
     private final JwtService jwtService;
 //    private final JwtServiceGoogle jwtServiceGoogle;
     private final UserDetailsService userDetailsService;
-    private final BCryptPasswordEncoder passwordEncoder;
+
+    private final AuthenticationManager authenticationManager;
+    private final BCryptPasswordEncoder PasswordEncoder;
     //cree une token pour un utilisateur qui se connect
-    public ResponseToken authenticate(AuthentificationRequest authentificationRequest){
-        System.out.println("authenticat");
-        var usernamePasswordAuthenticationToken= new UsernamePasswordAuthenticationToken(authentificationRequest.getAdresseMail(),authentificationRequest.getMotDePasse());
-        System.out.println(authentificationRequest.getAdresseMail());
-        Utilisateur utilisateur= utilisateurRepo.findByadresseMail(authentificationRequest.getAdresseMail()).orElseThrow();
-        var userDetails= userDetailsService.loadUserByUsername(authentificationRequest.getAdresseMail());
-        String token=jwtService.generateToken(userDetails,utilisateur);
-        System.out.println(GREEN+"token:---->:"+token);
-        return ResponseToken.builder().token(token).build();
+    public ResponseToken authenticate(AuthentificationRequest authentificationRequest) {
+        try {
+
+
+            var usernamePasswordAuthenticationToken = new UsernamePasswordAuthenticationToken(authentificationRequest.getAdresseMail(), authentificationRequest.getMotDePasse());
+            authenticationManager.authenticate(usernamePasswordAuthenticationToken);
+
+            System.out.println(authentificationRequest.getAdresseMail());
+            Utilisateur utilisateur = utilisateurRepo.findByadresseMail(authentificationRequest.getAdresseMail()).orElseThrow();
+            var userDetails = userDetailsService.loadUserByUsername(authentificationRequest.getAdresseMail());
+            String token = jwtService.generateToken(userDetails, utilisateur);
+            System.out.println(GREEN + "token:---->:" + token);
+            return ResponseToken.builder().token(token).build();
+        } catch (AuthenticationException e) {
+            throw new IllegalStateException("invalid username or password");
+        }
     }
     public ResponseToken authenticateGoogle(AuthentificationRequestGoogle authentificationRequestGoogle) throws Exception {
 
@@ -52,13 +65,18 @@ public class AuthentificationService {
 
         String token=jwtService.generateToken(userDetails,utilisateur);
 
-        return ResponseToken.builder().token(token).build();
+        try{
+            return ResponseToken.builder().token(token).build();
+        }catch (Exception e){
+            throw new Exception("invalid token");
+        }
+
     }
     //sauvgarder un nouveux utilisateur et cree son token de conection
     public ResponseToken save(RegisterRequest register) throws Exception {
 //        IOUtils.copy(file.getInputStream(),new FileOutputStream("cv.png"));
         System.out.println("save");
-        var motDePasse= passwordEncoder.encode(register.getMotDePasse());
+        var motDePasse= PasswordEncoder.encode(register.getMotDePasse());
         var adresseMailExist=
                 utilisateurRepo.
                 findByadresseMail(register.getAdresseMail())
@@ -115,17 +133,17 @@ public class AuthentificationService {
                         ));
             }
         }
+
         if (utilisateur==null)throw new Exception(RED+"user null");
         String token=jwtService.generateToken((UserDetails) utilisateur,utilisateur);
         return ResponseToken.builder().token(token).build();
     }
 
 
+
     public ResponseToken saveGoogleUser(RegisterRequest register) throws Exception {
 
         System.out.println("save google");
-
-
 
 
         var adresseMailExist=
@@ -138,7 +156,7 @@ public class AuthentificationService {
                                 .isPresent();
 
 
-        if (adresseMailExist) throw new IllegalStateException("user already exist");
+        if (adresseMailExist) throw new Exception("user already exist");
 
         UtilisateurGoogle utilisateur = null;
         switch (register.getRole()){
@@ -170,7 +188,7 @@ public class AuthentificationService {
                                 register.getAdresse(),
                                 register.getRole(),
                                 register.getEntreprise(),
-                                false
+                                true
                         ));
             }
             case MODERATEUR -> {

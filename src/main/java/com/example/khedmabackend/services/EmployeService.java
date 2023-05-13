@@ -81,6 +81,7 @@ public class EmployeService {
                 .orElseThrow();//je cherche dans les repogoogle sinon dans le repo non google
 
 
+
         //verification dans le repo des utilisateur non google
         var nonGoogleUserExist= utilisateurRepo.findUtilisateurByAnnonce(idAnnonce).isPresent();
         if (nonGoogleUserExist)

@@ -13,6 +13,7 @@ import com.example.khedmabackend.services.EmailService;
 import com.example.khedmabackend.services.ServiceConfirmation;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.web.bind.annotation.*;
 
 import java.security.InvalidKeyException;
@@ -31,55 +32,50 @@ public class AuthenticationController {
     private final JwtService jwtService;
     @PostMapping("/add-user")
     //rest api ajout d'un utilisateur
-    public ResponseEntity<ResponseToken> addUser(@RequestBody RegisterRequest register) throws Exception {
+    public ResponseEntity<?> addUser(@RequestBody RegisterRequest register) throws Exception {
         ResponseToken token=authentificationService.save(register);
 //        emailService.sendMail(register.getAdresseMail(), register.getPrenom(),token.getToken());
-        return ResponseEntity.status(201).body(token);
+        try {
+            return ResponseEntity.status(201).body(token);
+        }catch (Exception e){
+            return ResponseEntity.status(401).body(e.getMessage());// Renvoyer l'erreur au frontend
+        }
     }
     @PostMapping("/add-GoogleUser")
     //rest api ajout d'un utilisateur google
-    public ResponseEntity<ResponseToken> addGoogleUser(@RequestBody RegisterRequest register) throws Exception {
-        ResponseToken token=authentificationService.saveGoogleUser(register);
-        return ResponseEntity.status(201).body(token);
+    public ResponseEntity<?> addGoogleUser(@RequestBody RegisterRequest register) {
+        try {
+            ResponseToken token = authentificationService.saveGoogleUser(register);
+            return ResponseEntity.status(201).body(token);
+        } catch (Exception e) {
+            // Renvoyer l'erreur au frontend
+
+            return ResponseEntity.status(401).body(e.getMessage());
+        }
     }
     @GetMapping("/googleRepo")
     //rest api ajout d'un utilisateur google
-    public ResponseEntity<List<UtilisateurGoogle>> getGoogleUsers() throws Exception {
+    public ResponseEntity<?> getGoogleUsers() throws Exception {
         var utilisateur= utilisateurGoogleRepo.findAll();
-        return ResponseEntity.status(201).body(utilisateur);
+        try {
+            return ResponseEntity.status(201).body(utilisateur);
+        }catch (Exception e){
+            return ResponseEntity.status(401).body(e.getMessage());// Renvoyer l'erreur au frontend
+        }
     }
     @GetMapping("/utilisateurRepo")
     //rest api ajout d'un utilisateur google
-    public ResponseEntity<List<Utilisateur>> getUsers() throws Exception {
+    public ResponseEntity<?> getUsers() throws Exception {
+
         var utilisateur= utilisateurRepo.findAll();
-        return ResponseEntity.status(201).body(utilisateur);
+        try{
+            return ResponseEntity.status(201).body(utilisateur);
+        }catch (Exception e){
+            return ResponseEntity.status(401).body(e.getMessage());// Renvoyer l'erreur au frontend
+        }
     }
-//    @GetMapping("/test")
-//    public ModelAndView pageHtml(){
-//        ModelAndView modelAndView=new ModelAndView();
-//        modelAndView.setViewName("index.html");
-//        System.out.println(modelAndView.getModel());
-//        return modelAndView;
-//    }
 
 
-//    @PostMapping("/test")
-//    public String getUserInfo(@RequestBody Test test) throws Exception {
-//        System.out.println(test);
-//        System.out.println("-*/-*-*-/-*-*/*/test");
-//        System.out.println();
-//        var email=jwtService.extractTest(test.getToken());
-//
-//        System.out.println("l'utilisateur "+ utilisateurGoogleRepo.findByadresseMail(email).orElseThrow());
-//
-//        if (!jwtService.isTokenValid(test.getToken()))throw new Exception("non valide");
-//        System.out.println(jwtService.extractUsername(test.getToken()));
-//
-//
-//
-//
-//        return "test";
-//    }
 
     @GetMapping("/confirm")
     public void confirm(@RequestParam(value = "token") String token) throws InvalidKeyException {
@@ -87,15 +83,22 @@ public class AuthenticationController {
     }
     @PostMapping("/login")
     //rest api de conction d'un utilisateur
-    public ResponseEntity<ResponseToken> login(@RequestBody AuthentificationRequest authentificationRequest){
-        ResponseToken token= authentificationService.authenticate(authentificationRequest);
-        return ResponseEntity.ok().body(token);
+    public ResponseEntity<?> login(@RequestBody AuthentificationRequest authentificationRequest){
+        try {
+            ResponseToken token= authentificationService.authenticate(authentificationRequest);
+            return ResponseEntity.ok().body(token);
+        }catch (Exception e) {
+            return ResponseEntity.status(401).body("l'utilisateur n'existe pas ou bien le mot de passe est incorrecte");
+        }
     }
     @PostMapping("/Google-login")
     //rest api de conction d'un utilisateur
-    public ResponseEntity<ResponseToken> googlelogin(@RequestBody AuthentificationRequestGoogle authentificationRequestGoogle) throws Exception {
-        System.out.println(authentificationRequestGoogle);
-        ResponseToken token= authentificationService.authenticateGoogle(authentificationRequestGoogle);
-        return ResponseEntity.ok().body(token);
+    public ResponseEntity<?> googlelogin(@RequestBody AuthentificationRequestGoogle authentificationRequestGoogle)  {
+        try {
+            ResponseToken token= authentificationService.authenticateGoogle(authentificationRequestGoogle);
+            return ResponseEntity.ok().body(token);
+        }catch (Exception e){
+            return ResponseEntity.status(401).body("l'utilisateur n'existe pas");
+        }
     }
 }

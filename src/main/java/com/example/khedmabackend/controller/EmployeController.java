@@ -38,11 +38,21 @@ public class EmployeController {
     }
 
     @PostMapping("/postuler/{idAnnonce}")
-    public void postuler(@RequestBody Postulation postulation,@PathVariable String idAnnonce){
+    public ResponseEntity<?> postuler(@RequestBody Postulation postulation,@PathVariable String idAnnonce){
 
-        employeService.postuler(postulation,idAnnonce);
+        System.out.println("postuler");
+        System.out.println(postulation);
+        try {
+            System.out.println("postuler");
+            System.out.println(postulation);
+            employeService.postuler(postulation,idAnnonce);
+            return ResponseEntity.ok().body("success");
+        } catch (Exception e) {
+            return ResponseEntity.badRequest().body(e.getMessage());
+        }
 
     }
+
     @PutMapping("/update/{email}")
     public ResponseEntity<Utilisateur> updateUser(@PathVariable("email")String email,@RequestParam(required = false) String nom,@RequestParam(required = false) String prenom,@RequestParam(required = false) String tel){
         return ResponseEntity.ok().body(employeService.updateEmploye(email,nom,prenom,tel));
@@ -56,9 +66,16 @@ public class EmployeController {
 
     //suprression des annonce favoris
     @DeleteMapping("/delete-favoris/{idAnnonce}")
-    public String deleteFavoris(@PathVariable String idAnnonce){
-        employeService.deleteFavoris(idAnnonce);
-        return "deleted successfully";
+    public ResponseEntity<?> deleteFavoris(@PathVariable String idAnnonce){
+        try {
+            System.out.println("delete favoris");
+            System.out.println(idAnnonce);
+            employeService.deleteFavoris(idAnnonce);
+            return ResponseEntity.ok().body("success");
+        } catch (Exception e) {
+            return ResponseEntity.badRequest().body(e.getMessage());
+        }
+
     }
 
 }
