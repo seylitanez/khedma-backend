@@ -56,7 +56,7 @@ public class ApplicationConfig {
             @Override
             public void addCorsMappings(CorsRegistry registry) {
                 registry.addMapping("/api/v1/**")
-                        .allowedOrigins("http://localhost:9710")
+                        .allowedOrigins("https://khedma-dz.netlify.app")
                         .allowedMethods("GET", "POST")
                         .allowedHeaders("*");
             }
