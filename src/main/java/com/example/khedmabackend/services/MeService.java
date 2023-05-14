@@ -31,7 +31,7 @@ public class MeService {
                 .or(()->utilisateurRepo.findByadresseMail(myName))
                 .orElseThrow();
         File folder = new File("images/"+utilisateur.getId());
-        if(folder.exists()&& folder.listFiles()[0]!=null){
+        if(folder.exists()&& folder.listFiles().length>0){
             return "images/"+utilisateur.getId()+"/"+folder.listFiles()[0].getName();
         }
 

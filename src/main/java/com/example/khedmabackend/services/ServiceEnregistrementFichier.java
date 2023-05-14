@@ -26,7 +26,7 @@ public class ServiceEnregistrementFichier {
 
 
         File folder = new File("images/"+myId);
-        if(folder.exists()&& folder.listFiles()[0]!=null){
+        if(folder.exists()&& folder.listFiles().length>0){
             folder.listFiles()[0].delete();
         }
 

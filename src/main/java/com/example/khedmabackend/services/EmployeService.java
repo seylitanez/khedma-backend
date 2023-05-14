@@ -84,7 +84,7 @@ public class EmployeService {
                 .orElseThrow();//je cherche dans les repogoogle sinon dans le repo non google
 
         File myRepo=new File("images/"+me.getId());
-        var monCv= myRepo.getAbsoluteFile().listFiles()[0].getName();//je recupere le nom de mon fichier
+        var monCv="/images/"+me.getId()+"/"+ myRepo.getAbsoluteFile().listFiles()[0].getName();//je recupere le nom de mon fichier
 
 
 
