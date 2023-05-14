@@ -17,7 +17,7 @@ public class EmailService {
 
     public void sendMail(String to,String name,String token) throws MessagingException {
 
-        String activationLink="http://localhost:9630/api/v1/auth/confirm?token="+token;
+        String activationLink="https://khedma-backend-production.up.railway.app/api/v1/auth/confirm?token="+token;
 
         System.out.println("-------------------"+token);
         MimeMessage mimeMessage = mailSender.createMimeMessage();
