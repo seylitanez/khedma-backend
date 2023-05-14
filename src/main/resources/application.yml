@@ -1,11 +1,12 @@
 spring:
   data:
     mongodb:
-      port: 27017
-      host: localhost
+      username: mongo
+      password: fuwo3WTOuRL1mVbhpb1J
+      port: 6328
+      host: containers-us-west-70.railway.app
       database: khedma
       authentication-database: admin
       auto-index-creation: true
 server:
   port: 9630
-
