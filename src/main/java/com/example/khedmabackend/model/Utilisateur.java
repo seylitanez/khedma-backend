@@ -22,7 +22,7 @@ public abstract class Utilisateur extends UtilisateurGoogle implements UserDetai
     private Boolean valide;
 
     public Utilisateur(String motDePasse, String adresseMail, String nom, String prenom, Genre genre, String tel, Addresse adresse, Role role, Boolean valide) {
-        super(motDePasse, adresseMail, nom, prenom, genre, tel, adresse, role);
+        super(null, adresseMail, nom, prenom, genre, tel, adresse, role);
         this.motDePasse = motDePasse;
         this.valide=valide;
     }

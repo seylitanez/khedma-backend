@@ -37,7 +37,7 @@ public class AuthentificationService {
     private final AuthenticationManager authenticationManager;
     private final BCryptPasswordEncoder PasswordEncoder;
     //cree une token pour un utilisateur qui se connect
-    public ResponseToken authenticate(AuthentificationRequest authentificationRequest) {
+    public ResponseToken authenticate(AuthentificationRequest authentificationRequest) throws Exception {
         try {
             System.out.println(authentificationRequest.getAdresseMail());
             var usernamePasswordAuthenticationToken = new UsernamePasswordAuthenticationToken(authentificationRequest.getAdresseMail(), authentificationRequest.getMotDePasse());
@@ -47,8 +47,9 @@ public class AuthentificationService {
             String token = jwtService.generateToken(userDetails, utilisateur);
             System.out.println(GREEN + "token:---->:" + token);
             return ResponseToken.builder().token(token).build();
-        } catch (AuthenticationException e) {
-            throw new IllegalStateException("invalid username or password");
+        } catch (Exception e) {
+            System.out.println(RED + "error:---->:" + e.getMessage());
+            throw new Exception();
         }
     }
     public ResponseToken authenticateGoogle(AuthentificationRequestGoogle authentificationRequestGoogle) throws Exception {

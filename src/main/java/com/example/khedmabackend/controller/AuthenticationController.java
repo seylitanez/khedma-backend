@@ -71,6 +71,7 @@ public class AuthenticationController {
         try{
             return ResponseEntity.status(201).body(utilisateur);
         }catch (Exception e){
+            System.out.println(e.getMessage());
             return ResponseEntity.status(401).body(e.getMessage());// Renvoyer l'erreur au frontend
         }
     }
@@ -86,7 +87,8 @@ public class AuthenticationController {
             ResponseToken token= authentificationService.authenticate(authentificationRequest);
             return ResponseEntity.ok().body(token);
         }catch (Exception e) {
-            return ResponseEntity.status(401).body("l'utilisateur n'existe pas ou bien le mot de passe est incorrecte");
+            System.out.println(e.getMessage());
+            return ResponseEntity.status(401).body(e.getMessage());
         }
     }
     @PostMapping("/Google-login")

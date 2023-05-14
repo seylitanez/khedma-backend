@@ -27,7 +27,6 @@ public class UtilisateurGoogle  implements UserDetails {
     private Role role;
 
     public UtilisateurGoogle(String id, String adresseMail, String nom, String prenom, Genre genre, String tel, Addresse adresse, Role role) {
-        this.id = id;
         this.adresseMail = adresseMail;
         this.nom = nom;
         this.prenom = prenom;
