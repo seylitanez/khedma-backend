@@ -76,6 +76,9 @@ public class AuthentificationService {
 //        IOUtils.copy(file.getInputStream(),new FileOutputStream("cv.png"));
         System.out.println("save");
 
+        System.out.println(register.getAdresseMail());
+        System.out.println(register.getMotDePasse());
+
         var motDePasse= PasswordEncoder.encode(register.getMotDePasse());
         var adresseMailExist=
                 utilisateurRepo.

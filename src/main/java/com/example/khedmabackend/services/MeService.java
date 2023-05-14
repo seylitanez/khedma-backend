@@ -8,6 +8,8 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
+import java.io.File;
+
 @RequiredArgsConstructor
 @Service
 public class MeService {
@@ -18,6 +20,8 @@ public class MeService {
         UtilisateurGoogle utilisateur= utilisateurGoogleRepo.findByadresseMail(myName)
                 .or(()->utilisateurRepo.findByadresseMail(myName))
                 .orElseThrow();
+//        File myRepo=new File("images/"+utilisateur.getId());
+//        var monCv= myRepo.getAbsoluteFile().listFiles()[0].getName();
 
         return utilisateur;
     }

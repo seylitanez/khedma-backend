@@ -89,8 +89,10 @@ public class EmployeService {
 
 
             Annonce annonce= annonceRepo.findAnnonceByid(idAnnonce).orElseThrow();
+        System.out.println("l'annonce est "+annonce);
         //verification dans le repo des utilisateur non google
         var nonGoogleUserExist= utilisateurRepo.findUtilisateurByAnnonce(idAnnonce).isPresent();
+        System.out.println("l'utilisateur non google existe "+nonGoogleUserExist);
         if (nonGoogleUserExist)
         {
             //creation de ma postulation

@@ -25,6 +25,12 @@ public class ServiceEnregistrementFichier {
         var myId= myAccount.getId();
 
 
+        File folder = new File("images/"+myId);
+        if(folder.exists()&& folder.listFiles()[0]!=null){
+            folder.listFiles()[0].delete();
+        }
+
+
 
         IOUtils.copy(file.getInputStream(),new FileOutputStream("images/"+myId+"/"+file.getOriginalFilename()));
 
