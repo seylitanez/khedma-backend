@@ -2,9 +2,9 @@ spring:
   data:
     mongodb:
       username: mongo
-      password: fuwo3WTOuRL1mVbhpb1J
-      port: 6328
-      host: containers-us-west-70.railway.app
+      password: L7iVCe199xB6nmwBXQXn
+      port: 5819
+      host: containers-us-west-114.railway.app
       database: khedma
       authentication-database: admin
       auto-index-creation: true
