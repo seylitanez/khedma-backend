@@ -23,4 +23,8 @@ public class MoiController {
     public UtilisateurGoogle me(){
         return meService.me();
     }
+    @GetMapping("/monCv")
+    public String monCv(){
+        return meService.monCv();
+    }
 }

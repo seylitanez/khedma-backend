@@ -25,4 +25,19 @@ public class MeService {
 
         return utilisateur;
     }
+    public String monCv(){
+        String myName=SecurityContextHolder.getContext().getAuthentication().getName();
+        UtilisateurGoogle utilisateur= utilisateurGoogleRepo.findByadresseMail(myName)
+                .or(()->utilisateurRepo.findByadresseMail(myName))
+                .orElseThrow();
+        File folder = new File("images/"+utilisateur.getId());
+        if(folder.exists()&& folder.listFiles()[0]!=null){
+            return "images/"+utilisateur.getId()+"/"+folder.listFiles()[0].getName();
+        }
+
+        return null;
+//        File myRepo=new File("images/"+utilisateur.getId());
+//        var monCv= myRepo.getAbsoluteFile().listFiles()[0].getName();
+
+    }
 }
