@@ -35,3 +35,9 @@ jobs:
         run: |
           echo Add other actions to build,
           echo test, and deploy your project.
+          
+      # Display information about the event
+      - name: Show event information
+        run: |
+          echo "Event triggered by: ${{ github.actor }}"
+          echo "Event occurred at: ${{ github.event.head_commit.timestamp }}"
