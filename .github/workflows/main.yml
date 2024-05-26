@@ -1,0 +1,24 @@
+name: testing github action
+on:
+    push:
+      branches: [master]
+    pull_request:
+      branches: [master]
+jobs:
+  testing:
+    name: testing 
+    runs-on: ubuntu-latest
+    steps:
+      - name: smiyass n'importe quoi
+        uses: actions/checkout@v4
+        
+      - name: Setup Java JDK
+        uses: actions/setup-java@v4.2.1
+        with:
+          java-version: 17
+          distribution: oracle
+          cache: maven
+
+      - name: unit test
+        run : mvn -B test --file pom.xml
+          
