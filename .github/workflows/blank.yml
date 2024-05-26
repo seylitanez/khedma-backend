@@ -39,5 +39,6 @@ jobs:
       # Display information about the event
       - name: Show event information
         run: |
+          sudo apt  install jq 
           echo "Event triggered by: ${{ github.actor }}"
           echo "Event occurred at: ${{ toJson(github.event) }}" | jq
