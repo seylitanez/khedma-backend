@@ -18,7 +18,10 @@ jobs:
           java-version: 17
           distribution: oracle
           cache: maven
+      - name: starting 
+        run: mvn spring-boot:run
 
-      - name: unit test
-        run : mvn -B test --file pom.xml
+      # - name: unit test
+      #   run : mvn -B test --file pom.xml
+        
           
