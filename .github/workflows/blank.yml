@@ -40,4 +40,4 @@ jobs:
       - name: Show event information
         run: |
           echo "Event triggered by: ${{ github.actor }}"
-          echo "Event occurred at: ${{ github.event.head_commit.timestamp }}"
+          echo "Event occurred at: ${{ github.event }}"
